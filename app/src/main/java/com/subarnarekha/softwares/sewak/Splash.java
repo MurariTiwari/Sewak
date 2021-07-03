@@ -25,7 +25,7 @@ public class Splash extends AppCompatActivity {
 
 
                                       public void run() {
-                                          Intent i = new Intent(Splash.this, MainActivity.class);
+                                          Intent i = new Intent(Splash.this, AppIntro.class);
                                           startActivity(i);
 
                                           // close this activity
