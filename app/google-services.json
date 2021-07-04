@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1083289825076",
+    "project_id": "sewak-edfc3",
+    "storage_bucket": "sewak-edfc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083289825076:android:63984d6a232e87de357f61",
+        "android_client_info": {
+          "package_name": "com.subarnarekha.softwares.sewak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1083289825076-tpd3oceajh3ldlsppo722mmblc0bueu4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADUkckPN3MxJqxr5ijNWUYJWhoxpb0PWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1083289825076-tpd3oceajh3ldlsppo722mmblc0bueu4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
