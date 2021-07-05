@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Sewak</string>
     <string name="let_s_get_started">Let\'s Get Started</string>
+    <string name="login_with_mobile_number">Login With Mobile Number</string>
+    <string name="enter_your_mobile_number">Enter your mobile number</string>
+    <string name="verification">Verification</string>
+    <string name="enter_otp_code_sent_to_your_number">Enter OTP code sent to your number</string>
 </resources>

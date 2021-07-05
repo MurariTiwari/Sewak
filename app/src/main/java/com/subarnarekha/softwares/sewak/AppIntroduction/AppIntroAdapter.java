@@ -1,4 +1,4 @@
-package com.subarnarekha.softwares.sewak;
+package com.subarnarekha.softwares.sewak.AppIntroduction;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.subarnarekha.softwares.sewak.R;
 
 public class AppIntroAdapter extends PagerAdapter {
     Context ctx;

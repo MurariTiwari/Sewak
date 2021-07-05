@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.subarnarekha.softwares.sewak">
 
     <application
@@ -9,7 +10,9 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sewak">
-        <activity android:name=".AppIntro"></activity>
+        <activity android:name=".Login.VerifyOtp"></activity>
+        <activity android:name=".Login.LoginForm" />
+        <activity android:name=".AppIntroduction.AppIntro" />
         <activity android:name=".Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,7 +20,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
     </application>
-
 </manifest>

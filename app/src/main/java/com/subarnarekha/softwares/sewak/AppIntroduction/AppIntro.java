@@ -1,4 +1,4 @@
-package com.subarnarekha.softwares.sewak;
+package com.subarnarekha.softwares.sewak.AppIntroduction;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -9,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+
+import com.subarnarekha.softwares.sewak.Login.LoginForm;
+import com.subarnarekha.softwares.sewak.MainActivity;
+import com.subarnarekha.softwares.sewak.R;
 
 public class AppIntro extends AppCompatActivity {
     public  static ViewPager viewPager;
@@ -44,7 +48,7 @@ public class AppIntro extends AppCompatActivity {
         start = findViewById(R.id.start);
         start.setVisibility(View.GONE);
         start.setOnClickListener(v -> {
-            Intent i = new Intent(AppIntro.this, MainActivity.class);
+            Intent i = new Intent(AppIntro.this, LoginForm.class);
             startActivity(i);
         });
         adapter = new AppIntroAdapter(this);
