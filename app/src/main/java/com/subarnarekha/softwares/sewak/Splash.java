@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.subarnarekha.softwares.sewak.AppIntroduction.AppIntro;
+import com.subarnarekha.softwares.sewak.Login.LoginForm;
+import com.subarnarekha.softwares.sewak.profile.ProfileScreen;
 
 public class Splash extends AppCompatActivity {
 
@@ -27,7 +29,7 @@ public class Splash extends AppCompatActivity {
 
 
                                       public void run() {
-                                          Intent i = new Intent(Splash.this, AppIntro.class);
+                                          Intent i = new Intent(Splash.this, ProfileScreen.class);
                                           startActivity(i);
 
                                           // close this activity
