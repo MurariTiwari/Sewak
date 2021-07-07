@@ -10,19 +10,21 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.goodiebag.pinview.Pinview;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseException;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.subarnarekha.softwares.sewak.MainActivity;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.subarnarekha.softwares.sewak.R;
+import com.subarnarekha.softwares.sewak.profile.ProfileScreen;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class VerifyOtp extends AppCompatActivity {
@@ -31,6 +33,8 @@ public class VerifyOtp extends AppCompatActivity {
     String phoneno,otpid,pinfrompinview="";
     ProgressBar spinner;
     FirebaseAuth mAuth;
+    FirebaseFirestore db;
+    DocumentReference documentReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,10 +42,11 @@ public class VerifyOtp extends AppCompatActivity {
         phoneno = getIntent().getStringExtra("phoneno");
         pin = findViewById(R.id.pin);
         login = findViewById(R.id.login);
-        spinner = findViewById(R.id.spinner);
+        spinner = findViewById(R.id.profile_spinner);
         spinner.setVisibility(View.GONE);
 
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
         initiateOTP();
         login.setOnClickListener(v -> {
            pinfrompinview = pin.getValue();
@@ -94,10 +99,20 @@ public class VerifyOtp extends AppCompatActivity {
                         // Sign in success, update UI with the signed-in user's information
                         // Log.d(TAG, "signInWithCredential:success");
 
-                        // FirebaseUser user = task.getResult().getUser();
+                        FirebaseUser fuser = task.getResult().getUser();
                         // Update UI
-                        startActivity(new Intent(VerifyOtp.this, MainActivity.class));
-                        finish();
+                        Map<String, Object> user = new HashMap<>();
+                        user.put("phoneno", fuser.getPhoneNumber());
+                        user.put("profileimg", "");
+                        user.put("name", "");
+                        user.put("address", "");
+
+                        documentReference = db.collection("users").document(fuser.getUid());
+                        documentReference.set(user)
+                                .addOnSuccessListener(unused -> {
+                                    startActivity(new Intent(VerifyOtp.this, ProfileScreen.class));
+                                    finish();
+                                });;
                     } else {
                         login.setVisibility(View.VISIBLE);
                         spinner.setVisibility(View.GONE);

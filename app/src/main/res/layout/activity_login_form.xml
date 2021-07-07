@@ -105,6 +105,8 @@
         android:ems="10"
         android:inputType="phone"
         android:padding="10dp"
+        android:hint="1234567890"
+        android:textColorHint="@color/secondary_text"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/guideline10"
         app:layout_constraintEnd_toEndOf="parent"
