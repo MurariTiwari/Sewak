@@ -141,7 +141,7 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline13"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline16"
-        app:srcCompat="@drawable/ic_baseline_home_24" />
+        app:srcCompat="@drawable/home_color" />
 
     <TextView
         android:id="@+id/name"
