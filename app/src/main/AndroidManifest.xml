@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.subarnarekha.softwares.sewak">
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -10,7 +11,12 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sewak">
-        <activity android:name=".profile.ProfileScreen"></activity>
+        <activity android:name=".home.BottomActivity"></activity>
+        <activity
+            android:name=".home.BottomNavigation"
+            android:label="@string/title_activity_bottom_navigation"
+            android:theme="@style/Theme.Sewak.NoActionBar" />
+        <activity android:name=".profile.ProfileScreen" />
         <activity android:name=".Login.VerifyOtp" />
         <activity android:name=".Login.LoginForm" />
         <activity android:name=".AppIntroduction.AppIntro" />

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.subarnarekha.softwares.sewak.AppIntroduction.AppIntro;
 import com.subarnarekha.softwares.sewak.Login.LoginForm;
+import com.subarnarekha.softwares.sewak.home.BottomActivity;
 import com.subarnarekha.softwares.sewak.profile.ProfileScreen;
 
 public class Splash extends AppCompatActivity {
@@ -25,17 +26,13 @@ public class Splash extends AppCompatActivity {
         Animation transition = AnimationUtils.loadAnimation(this,R.anim.transition);
         logo.startAnimation(transition);
         slogan.startAnimation(transition);
-        new Handler().postDelayed(new Runnable() {
+        new Handler().postDelayed(() -> {
+            Intent i = new Intent(Splash.this, BottomActivity.class);
+            startActivity(i);
 
-
-                                      public void run() {
-                                          Intent i = new Intent(Splash.this, ProfileScreen.class);
-                                          startActivity(i);
-
-                                          // close this activity
-                                          finish();
-                                      }
-                                  },
+            // close this activity
+            finish();
+        },
                 4000);
     }
 }
