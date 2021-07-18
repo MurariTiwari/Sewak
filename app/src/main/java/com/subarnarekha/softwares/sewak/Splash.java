@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.subarnarekha.softwares.sewak.AppIntroduction.AppIntro;
 import com.subarnarekha.softwares.sewak.Login.LoginForm;
+import com.subarnarekha.softwares.sewak.addService.AddService;
+import com.subarnarekha.softwares.sewak.addService.SelectProfession;
 import com.subarnarekha.softwares.sewak.home.BottomActivity;
 import com.subarnarekha.softwares.sewak.profile.ProfileScreen;
 
@@ -27,7 +29,7 @@ public class Splash extends AppCompatActivity {
         logo.startAnimation(transition);
         slogan.startAnimation(transition);
         new Handler().postDelayed(() -> {
-            Intent i = new Intent(Splash.this, BottomActivity.class);
+            Intent i = new Intent(Splash.this, SelectProfession.class);
             startActivity(i);
 
             // close this activity
