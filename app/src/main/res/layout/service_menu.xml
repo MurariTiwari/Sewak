@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/primary_light"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:weightSum="12">
+
+    <EditText
+        android:id="@+id/add_service_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:hint="Service"
+        android:inputType="textPersonName"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/secondary_text"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/add_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_weight="3"
+        android:background="@drawable/rounded_corner"
+        android:ems="10"
+        android:hint="Price"
+        android:inputType="numberSigned"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/secondary_text"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/close_service_menu"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:padding="5dp"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
+</LinearLayout>

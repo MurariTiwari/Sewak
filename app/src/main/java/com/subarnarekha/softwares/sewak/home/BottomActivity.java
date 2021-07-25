@@ -4,17 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.subarnarekha.softwares.sewak.MainActivity;
 import com.subarnarekha.softwares.sewak.R;
+import com.subarnarekha.softwares.sewak.Splash;
+import com.subarnarekha.softwares.sewak.addService.SelectProfession;
+import com.subarnarekha.softwares.sewak.fragments.AddService;
 import com.subarnarekha.softwares.sewak.fragments.CallHistory;
 import com.subarnarekha.softwares.sewak.fragments.Contact;
 import com.subarnarekha.softwares.sewak.fragments.Home;
 import com.subarnarekha.softwares.sewak.fragments.Service;
 
 import org.jetbrains.annotations.NotNull;
+
+import static maes.tech.intentanim.CustomIntent.customType;
 
 public class BottomActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -43,6 +53,14 @@ public class BottomActivity extends AppCompatActivity {
             getSupportFragmentManager().beginTransaction().replace(R.id.framecontainer,temp).commit();
             return true;
         });
+
+    }
+
+    public void addService(View view) {
+
+        Intent i = new Intent(BottomActivity.this, SelectProfession.class);
+        startActivity(i);
+        customType(BottomActivity.this,"up-to-bottom");
 
     }
 }

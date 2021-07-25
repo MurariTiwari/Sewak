@@ -3,6 +3,8 @@
     package="com.subarnarekha.softwares.sewak">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +13,9 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sewak">
-        <activity android:name=".home.BottomActivity"></activity>
+        <activity android:name=".addService.AddService"></activity>
+        <activity android:name=".addService.SelectProfession" />
+        <activity android:name=".home.BottomActivity" />
         <activity
             android:name=".home.BottomNavigation"
             android:label="@string/title_activity_bottom_navigation"
