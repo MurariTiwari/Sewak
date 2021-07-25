@@ -81,11 +81,11 @@ public class AddService extends AppCompatActivity {
     View parent;
     StorageReference storageReference;
     FirebaseFirestore db;
+    FirebaseUser user;
     DocumentReference documentReference;
     List<String> files,status;
     RecyclerView recyclerView;
     ImageUploadAdapter adapter;
-    FirebaseUser user;
     FusedLocationProviderClient fusedLocationProviderClient;
 
     String dataAddress="",dataBio="",dataStartDate="",dataPhoneCall="yes";
@@ -113,8 +113,8 @@ public class AddService extends AppCompatActivity {
         parent = findViewById(R.id.parent_layout);
         allowPhone = findViewById(R.id.allow_phone_call);
         storageReference = FirebaseStorage.getInstance().getReference();
-        db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
+        db = FirebaseFirestore.getInstance();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         files = new ArrayList<>();
         status = new ArrayList<>();
@@ -221,6 +221,7 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
                 if(isValid())
                 {
                     Map<String, Object> docData = new HashMap<>();
+                    Map<String, Object> docUpdate = new HashMap<>();
                     docData.put("user", user.getUid());
                     docData.put("address", dataAddress);
                     docData.put("longitude", dataLong);
@@ -236,6 +237,15 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
                                     // Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                    docUpdate.put("service",profession.replaceAll("\\s", "")+"/"+documentReference.getId());
+                                    db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Snackbar snackbar = Snackbar
+                                                    .make(parent, "Service added successfully", Snackbar.LENGTH_LONG);
+                                            snackbar.show();
+                                        }
+                                    });
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
