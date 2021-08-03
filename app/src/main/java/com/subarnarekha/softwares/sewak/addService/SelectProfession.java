@@ -80,7 +80,7 @@ Adapter adapter;
 
 
         adapter = new Adapter(names,images,this);
-        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,2,GridLayoutManager.VERTICAL,false);
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false);
         datalist.setLayoutManager(gridLayoutManager);
         datalist.setAdapter(adapter);
     }

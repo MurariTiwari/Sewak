@@ -16,6 +16,7 @@ import com.subarnarekha.softwares.sewak.addService.AddService;
 import com.subarnarekha.softwares.sewak.addService.SelectProfession;
 import com.subarnarekha.softwares.sewak.home.BottomActivity;
 import com.subarnarekha.softwares.sewak.profile.ProfileScreen;
+import com.subarnarekha.softwares.sewak.service.ViewService;
 
 public class Splash extends AppCompatActivity {
 
@@ -29,7 +30,7 @@ public class Splash extends AppCompatActivity {
         logo.startAnimation(transition);
         slogan.startAnimation(transition);
         new Handler().postDelayed(() -> {
-            Intent i = new Intent(Splash.this, SelectProfession.class);
+            Intent i = new Intent(Splash.this, BottomActivity.class);
             startActivity(i);
 
             // close this activity

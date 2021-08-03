@@ -106,6 +106,7 @@ public class VerifyOtp extends AppCompatActivity {
                         user.put("profileimg", "");
                         user.put("name", "");
                         user.put("address", "");
+                        user.put("service", "");
 
                         documentReference = db.collection("users").document(fuser.getUid());
                         documentReference.set(user)

@@ -1,66 +1,141 @@
 package com.subarnarekha.softwares.sewak.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 
+import com.google.android.material.navigation.NavigationView;
 import com.subarnarekha.softwares.sewak.R;
+import com.subarnarekha.softwares.sewak.Splash;
+import com.subarnarekha.softwares.sewak.addService.Adapter;
+import com.subarnarekha.softwares.sewak.home.BottomActivity;
+import com.subarnarekha.softwares.sewak.profile.ProfileScreen;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Home#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+
 public class Home extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    RecyclerView datalist;
+    CircleImageView profile;
+    List<String> names = new ArrayList<>();
+    List<Integer> images = new ArrayList<>();
+    Adapter adapter;
+    ImageView menubar;
 
     public Home() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Home.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Home newInstance(String param1, String param2) {
-        Home fragment = new Home();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        datalist = view.findViewById(R.id.categories);
+        profile = view.findViewById(R.id.profile_page);
+        menubar = view.findViewById(R.id.menubar);
+
+
+        names.add("Barber");
+        names.add("Beautician");
+        names.add("Blacksmith");
+        names.add("Carpenter");
+        names.add("Cook & Catering");
+        names.add("Construction");
+        names.add("Doctor");
+        names.add("Electrician");
+        names.add("Farmer");
+        names.add("Light & Sound");
+        names.add("Laundry");
+        names.add("Mechanic");
+        names.add("Milkman");
+        names.add("Musician & Band");
+        names.add("Maid");
+        names.add("Plumber");
+        names.add("Painter");
+        names.add("Photographer");
+        names.add("Priest");
+        names.add("Poultry Farm");
+        names.add("Tutor");
+        names.add("Tent & House");
+        names.add("Tailor");
+
+
+        images.add(R.drawable.barber);
+        images.add(R.drawable.makeover);
+        images.add(R.drawable.blacksmith);
+        images.add(R.drawable.carpenter);
+        images.add(R.drawable.cooking);
+        images.add(R.drawable.brickwall);
+        images.add(R.drawable.doctor);
+        images.add(R.drawable.electrician);
+        images.add(R.drawable.harvest);
+        images.add(R.drawable.concert);
+        images.add(R.drawable.washing_clothes);
+        images.add(R.drawable.car_repair);
+        images.add(R.drawable.milk);
+        images.add(R.drawable.concert_2);
+        images.add(R.drawable.maid);
+        images.add(R.drawable.plumber);
+        images.add(R.drawable.painter);
+        images.add(R.drawable.photo);
+        images.add(R.drawable.guru);
+        images.add(R.drawable.hen);
+        images.add(R.drawable.presentation);
+        images.add(R.drawable.tent);
+        images.add(R.drawable.tailor);
+
+        adapter = new Adapter(names,images,getContext());
+        GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),4,GridLayoutManager.VERTICAL,false);
+        datalist.setLayoutManager(gridLayoutManager);
+        datalist.setAdapter(adapter);
+        profile.setOnClickListener(v -> {
+            Intent i = new Intent(getActivity(), ProfileScreen.class);
+            startActivity(i);
+        });
+
+        menubar.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(getContext(),menubar);
+            popupMenu.getMenuInflater().inflate(R.menu.drawer_menu, popupMenu.getMenu());
+            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId())
+                    {
+
+                    }
+                    return false;
+                }
+            });
+            popupMenu.show();
+        });
+        return view;
     }
 }

@@ -1,28 +1,19 @@
 package com.subarnarekha.softwares.sewak.home;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.subarnarekha.softwares.sewak.MainActivity;
 import com.subarnarekha.softwares.sewak.R;
-import com.subarnarekha.softwares.sewak.Splash;
 import com.subarnarekha.softwares.sewak.addService.SelectProfession;
-import com.subarnarekha.softwares.sewak.fragments.AddService;
 import com.subarnarekha.softwares.sewak.fragments.CallHistory;
 import com.subarnarekha.softwares.sewak.fragments.Contact;
 import com.subarnarekha.softwares.sewak.fragments.Home;
-import com.subarnarekha.softwares.sewak.fragments.Service;
-
-import org.jetbrains.annotations.NotNull;
+import com.subarnarekha.softwares.sewak.service.ViewService;
 
 import static maes.tech.intentanim.CustomIntent.customType;
 
@@ -44,7 +35,7 @@ public class BottomActivity extends AppCompatActivity {
             {
                 case R.id.mHome : temp = new Home();
                     break;
-                case R.id.mService: temp = new Service();
+                case R.id.mService: temp = new ViewService();
                     break;
                 case R.id.mContact: temp = new Contact();
                     break;
