@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,7 +36,6 @@ public class ViewService extends Fragment {
     ViewServiceAdapter adapter;
     FirebaseFirestore db;
     private ProgressBar progressBar;
-    DocumentReference documentReference;
     FirebaseUser user;
     String serviceName;
     TextView serviceNameText,serviceDescription,serviceLocation,serviceTime;
@@ -43,6 +44,9 @@ public class ViewService extends Fragment {
     ArrayList<String> images;
     ArrayList<Map<String,Object>> serviceItemModel;
     View withData,withoutdata;
+
+
+    SharedPreferences preferences;
 
 
     @Override
@@ -62,6 +66,49 @@ public class ViewService extends Fragment {
         viewServiceLayout = view.findViewById(R.id.view_service);
         withData = view.findViewById(R.id.with_data);
         withoutdata = view.findViewById(R.id.no_data);
+        db = FirebaseFirestore.getInstance();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+
+        preferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+
+        if(preferences.contains("service"))
+        {
+            if(preferences.getString("service","").equals(""))
+            {
+                withoutdata.setVisibility(View.VISIBLE);
+                withData.setVisibility(View.GONE);
+            }else {
+                String servicePath = preferences.getString("service","");
+                serviceName = servicePath.split("/")[0];
+                serviceNameText.setText(serviceName);
+                DocumentReference serviceReference = db.document(servicePath);
+                serviceReference.get()
+                        .addOnSuccessListener(documentSnapshot -> {
+                            images = (ArrayList<String>) documentSnapshot.get("images");
+                            progressBar.setProgress(100/images.size());
+                            adapter = new ViewServiceAdapter(getContext(),images);
+                            viewPager.setAdapter(adapter);
+                            serviceDescription.setText(documentSnapshot.getString("biography"));
+                            serviceLocation.setText(documentSnapshot.getString("address"));
+                            serviceTime.setText("SINCE :  "+documentSnapshot.getString("workStart"));
+                            serviceItemModel = (ArrayList<Map<String, Object>>) documentSnapshot.get("serviceMenu");
+                            for(int i=0;i<serviceItemModel.size();i++)
+                            {
+                                Map<String, Object> item = serviceItemModel.get(i);
+                                View serviceView = getLayoutInflater().inflate(R.layout.view_service_menu,null,false);
+                                TextView serviceName = serviceView.findViewById(R.id.view_service_name);
+                                TextView servicePrice = serviceView.findViewById(R.id.view_service_price);
+                                serviceName.setText(item.get("serviceName").toString());
+                                servicePrice.setText(item.get("servicePrice").toString());
+                                serviceMenuLayout.addView(serviceView);
+                                shimmer.setVisibility(View.GONE);
+                                viewServiceLayout.setVisibility(View.VISIBLE);
+                            }
+                        });
+
+            }
+        }
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -86,51 +133,6 @@ public class ViewService extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
-        user = FirebaseAuth.getInstance().getCurrentUser();
-
-        DocumentReference documentReference = db.document("users/"+user.getUid());
-        documentReference.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        String servicePath = documentSnapshot.getString("service");
-                        if(servicePath.equals(""))
-                        {
-                           withoutdata.setVisibility(View.VISIBLE);
-                           withData.setVisibility(View.GONE);
-                        }else {
-                        serviceName = servicePath.split("/")[0];
-                        serviceNameText.setText(serviceName);
-                        DocumentReference serviceReference = db.document(servicePath);
-                        serviceReference.get()
-                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                        images = (ArrayList<String>) documentSnapshot.get("images");
-                                        progressBar.setProgress(100/images.size());
-                                        adapter = new ViewServiceAdapter(getContext(),images);
-                                        viewPager.setAdapter(adapter);
-                                        serviceDescription.setText(documentSnapshot.getString("biography"));
-                                        serviceLocation.setText(documentSnapshot.getString("address"));
-                                        serviceTime.setText("SINCE :  "+documentSnapshot.getString("workStart"));
-                                        serviceItemModel = (ArrayList<Map<String, Object>>) documentSnapshot.get("serviceMenu");
-                                        for(int i=0;i<serviceItemModel.size();i++)
-                                        {
-                                            Map<String, Object> item = serviceItemModel.get(i);
-                                            View serviceView = getLayoutInflater().inflate(R.layout.view_service_menu,null,false);
-                                            TextView serviceName = serviceView.findViewById(R.id.view_service_name);
-                                            TextView servicePrice = serviceView.findViewById(R.id.view_service_price);
-                                            serviceName.setText(item.get("serviceName").toString());
-                                            servicePrice.setText(item.get("servicePrice").toString());
-                                            serviceMenuLayout.addView(serviceView);
-                                            shimmer.setVisibility(View.GONE);
-                                            viewServiceLayout.setVisibility(View.VISIBLE);
-                                        }
-                                    }
-                                });
-                    }}
-                });
 
     }
 

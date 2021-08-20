@@ -10,7 +10,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
@@ -88,6 +90,9 @@ public class AddService extends AppCompatActivity {
     ImageUploadAdapter adapter;
     FusedLocationProviderClient fusedLocationProviderClient;
 
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+
     String dataAddress="",dataBio="",dataStartDate="",dataPhoneCall="yes";
     double dataLat = 0,dataLong = 0;
     List<ServiceItemModel> dataServiceMenu;
@@ -126,6 +131,10 @@ public class AddService extends AppCompatActivity {
         proffesionView.setText(profession);
         adapter = new ImageUploadAdapter(files,status);
         recyclerView.setAdapter(adapter);
+
+
+        preferences = getSharedPreferences("service", Context.MODE_PRIVATE);
+        editor = preferences.edit();
 
 
             Dexter.withContext(getApplicationContext())
@@ -231,6 +240,7 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
                     docData.put("serviceMenu", dataServiceMenu);
                     docData.put("images", dataImages);
                     docData.put("allowPhone", dataPhoneCall);
+                    docData.put("service",profession);
                     db.collection(profession.replaceAll("\\s", ""))
                             .add(docData)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -241,6 +251,19 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
                                     db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
+                                            // save to preferences
+                                            editor.putString("user", user.getUid());
+                                            editor.putString("address",dataAddress);
+                                            editor.putFloat("longitude", (float) dataLong);
+                                            editor.putFloat("latitude", (float) dataLong);
+                                            editor.putString("biography", dataBio);
+                                            editor.putString("workStart", dataStartDate);
+                                            // editor.putString("serviceMenu", String.valueOf(dataServiceMenu));
+                                            // editor.putString("images", dataImages);
+                                            editor.putString("allowPhone", dataPhoneCall);
+                                            editor.putString("service", profession);
+
+                                            editor.commit();
                                             Snackbar snackbar = Snackbar
                                                     .make(parent, "Service added successfully", Snackbar.LENGTH_LONG);
                                             snackbar.show();

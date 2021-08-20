@@ -1,6 +1,8 @@
 package com.subarnarekha.softwares.sewak.fragments;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.subarnarekha.softwares.sewak.R;
 import com.subarnarekha.softwares.sewak.Splash;
@@ -43,6 +46,7 @@ public class Home extends Fragment {
     List<Integer> images = new ArrayList<>();
     Adapter adapter;
     ImageView menubar;
+    SharedPreferences preferences;
 
     public Home() {
         // Required empty public constructor
@@ -62,22 +66,22 @@ public class Home extends Fragment {
         profile = view.findViewById(R.id.profile_page);
         menubar = view.findViewById(R.id.menubar);
 
+        preferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
 
         names.add("Barber");
         names.add("Beautician");
-        names.add("Blacksmith");
         names.add("Carpenter");
         names.add("Cook & Catering");
         names.add("Construction");
         names.add("Doctor");
         names.add("Electrician");
         names.add("Farmer");
+        names.add("GYM");
         names.add("Light & Sound");
         names.add("Laundry");
         names.add("Mechanic");
         names.add("Milkman");
         names.add("Musician & Band");
-        names.add("Maid");
         names.add("Plumber");
         names.add("Painter");
         names.add("Photographer");
@@ -86,23 +90,23 @@ public class Home extends Fragment {
         names.add("Tutor");
         names.add("Tent & House");
         names.add("Tailor");
+        names.add("Welder");
 
 
         images.add(R.drawable.barber);
         images.add(R.drawable.makeover);
-        images.add(R.drawable.blacksmith);
         images.add(R.drawable.carpenter);
         images.add(R.drawable.cooking);
         images.add(R.drawable.brickwall);
         images.add(R.drawable.doctor);
         images.add(R.drawable.electrician);
         images.add(R.drawable.harvest);
+        images.add(R.drawable.gym);
         images.add(R.drawable.concert);
         images.add(R.drawable.washing_clothes);
         images.add(R.drawable.car_repair);
         images.add(R.drawable.milk);
         images.add(R.drawable.concert_2);
-        images.add(R.drawable.maid);
         images.add(R.drawable.plumber);
         images.add(R.drawable.painter);
         images.add(R.drawable.photo);
@@ -111,6 +115,7 @@ public class Home extends Fragment {
         images.add(R.drawable.presentation);
         images.add(R.drawable.tent);
         images.add(R.drawable.tailor);
+        images.add(R.drawable.welder);
 
         adapter = new Adapter(names,images,getContext());
         GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),4,GridLayoutManager.VERTICAL,false);
@@ -120,7 +125,8 @@ public class Home extends Fragment {
             Intent i = new Intent(getActivity(), ProfileScreen.class);
             startActivity(i);
         });
-
+        if(preferences.contains("profileimg"))
+        Glide.with(getContext()).load(preferences.getString("profileimg","")).into(profile);
         menubar.setOnClickListener(v -> {
             PopupMenu popupMenu = new PopupMenu(getContext(),menubar);
             popupMenu.getMenuInflater().inflate(R.menu.drawer_menu, popupMenu.getMenu());

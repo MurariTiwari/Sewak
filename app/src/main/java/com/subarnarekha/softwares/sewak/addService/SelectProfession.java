@@ -29,19 +29,18 @@ Adapter adapter;
 
         names.add("Barber");
         names.add("Beautician");
-        names.add("Blacksmith");
         names.add("Carpenter");
         names.add("Cook & Catering");
         names.add("Construction");
         names.add("Doctor");
         names.add("Electrician");
         names.add("Farmer");
+        names.add("GYM");
         names.add("Light & Sound");
         names.add("Laundry");
         names.add("Mechanic");
         names.add("Milkman");
         names.add("Musician & Band");
-        names.add("Maid");
         names.add("Plumber");
         names.add("Painter");
         names.add("Photographer");
@@ -50,25 +49,23 @@ Adapter adapter;
         names.add("Tutor");
         names.add("Tent & House");
         names.add("Tailor");
-
-
+        names.add("Welder");
 
 
         images.add(R.drawable.barber);
         images.add(R.drawable.makeover);
-        images.add(R.drawable.blacksmith);
         images.add(R.drawable.carpenter);
         images.add(R.drawable.cooking);
         images.add(R.drawable.brickwall);
         images.add(R.drawable.doctor);
         images.add(R.drawable.electrician);
         images.add(R.drawable.harvest);
+        images.add(R.drawable.gym);
         images.add(R.drawable.concert);
         images.add(R.drawable.washing_clothes);
         images.add(R.drawable.car_repair);
         images.add(R.drawable.milk);
         images.add(R.drawable.concert_2);
-        images.add(R.drawable.maid);
         images.add(R.drawable.plumber);
         images.add(R.drawable.painter);
         images.add(R.drawable.photo);
@@ -77,6 +74,7 @@ Adapter adapter;
         images.add(R.drawable.presentation);
         images.add(R.drawable.tent);
         images.add(R.drawable.tailor);
+        images.add(R.drawable.welder);
 
 
         adapter = new Adapter(names,images,this);

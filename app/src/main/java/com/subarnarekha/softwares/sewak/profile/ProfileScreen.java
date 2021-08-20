@@ -145,6 +145,8 @@ public class ProfileScreen extends AppCompatActivity {
                     }).check();
         });
 
+        logout.setOnClickListener(v -> FirebaseAuth.getInstance().signOut());
+
         save.setOnClickListener(v -> {
             if(newname.getText().toString().trim().length()!=0&&newaddress.getText().toString().length()!=0)
             {
