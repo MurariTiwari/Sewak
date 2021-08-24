@@ -29,7 +29,9 @@
                 android:src="@drawable/profilepic"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="2dp" />
+
             <TextView
+                android:id="@+id/your_location"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -41,7 +43,8 @@
                 android:drawableLeft="@drawable/ic_baseline_location_on_24"
                 android:padding="6dp"
                 android:textColor="@color/white"
-                android:textSize="18sp">
+                android:textSize="18sp"
+                android:singleLine="true">
 
             </TextView>
 

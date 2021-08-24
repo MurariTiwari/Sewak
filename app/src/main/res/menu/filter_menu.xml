@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/km10"
+        android:title="Within 10Km">
+
+    </item>
+    <item
+        android:id="@+id/km25"
+        android:title="Within 25Km">
+
+    </item>
+    <item
+        android:id="@+id/km50"
+        android:title="Within 50Km">
+
+    </item>
+    <item
+        android:id="@+id/km100"
+        android:title="Within 100Km">
+
+    </item>
+</menu>

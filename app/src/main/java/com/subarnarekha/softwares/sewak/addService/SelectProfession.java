@@ -1,5 +1,6 @@
 package com.subarnarekha.softwares.sewak.addService;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -7,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import com.subarnarekha.softwares.sewak.R;
-import com.subarnarekha.softwares.sewak.Splash;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,7 @@ Adapter adapter;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_profession);
-        datalist = findViewById(R.id.datalist);
+        datalist = findViewById(R.id.search_results);
 
         names.add("Barber");
         names.add("Beautician");
@@ -77,18 +80,11 @@ Adapter adapter;
         images.add(R.drawable.welder);
 
 
-        adapter = new Adapter(names,images,this);
+        adapter = new Adapter(names,images,this,"service");
         GridLayoutManager gridLayoutManager=new GridLayoutManager(this,3,GridLayoutManager.VERTICAL,false);
         datalist.setLayoutManager(gridLayoutManager);
         datalist.setAdapter(adapter);
-    }
-    @SuppressLint("ResourceAsColor")
-    public void selectedProfession(View v)
-    {
-        TextView titleView = v.findViewById(R.id.name_proffesion);
-        Intent i = new Intent(SelectProfession.this, AddService.class);
-        i.putExtra("profession",titleView.getText());
-        startActivity(i);
 
     }
+
 }

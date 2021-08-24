@@ -32,6 +32,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.geofire.GeoFireUtils;
+import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -58,6 +60,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.subarnarekha.softwares.sewak.R;
+import com.subarnarekha.softwares.sewak.home.BottomActivity;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -79,7 +82,7 @@ public class AddService extends AppCompatActivity {
     LinearLayout layoutList;
     Button add,save,upload;
     String API_KEY = "AIzaSyBxhYXmUwZeB-Tp17KHEgeHpDoAGtXWebI";
-    String profession;
+    String profession,professionName;
     View parent;
     StorageReference storageReference;
     FirebaseFirestore db;
@@ -127,13 +130,13 @@ public class AddService extends AppCompatActivity {
         dataImages =new ArrayList<>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        profession = getIntent().getStringExtra("profession");
+        professionName = profession = getIntent().getStringExtra("profession");
         proffesionView.setText(profession);
         adapter = new ImageUploadAdapter(files,status);
         recyclerView.setAdapter(adapter);
 
 
-        preferences = getSharedPreferences("service", Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         editor = preferences.edit();
 
 
@@ -226,9 +229,13 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                save.setText("Saving...");
+                save.setActivated(false);
                 dataBio = biography.getText().toString();
                 if(isValid())
                 {
+
+                    String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(dataLat, dataLong));
                     Map<String, Object> docData = new HashMap<>();
                     Map<String, Object> docUpdate = new HashMap<>();
                     docData.put("user", user.getUid());
@@ -240,33 +247,27 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
                     docData.put("serviceMenu", dataServiceMenu);
                     docData.put("images", dataImages);
                     docData.put("allowPhone", dataPhoneCall);
-                    docData.put("service",profession);
+                    docData.put("service",professionName);
+                    docData.put("geohash",hash);
                     db.collection(profession.replaceAll("\\s", ""))
                             .add(docData)
                             .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                 @Override
                                 public void onSuccess(DocumentReference documentReference) {
                                     // Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                                    docUpdate.put("service",profession.replaceAll("\\s", "")+"/"+documentReference.getId());
+                                    String serviceLink = profession.replaceAll("\\s", "")+"/"+documentReference.getId();
+                                    docUpdate.put("service",serviceLink);
                                     db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            // save to preferences
-                                            editor.putString("user", user.getUid());
-                                            editor.putString("address",dataAddress);
-                                            editor.putFloat("longitude", (float) dataLong);
-                                            editor.putFloat("latitude", (float) dataLong);
-                                            editor.putString("biography", dataBio);
-                                            editor.putString("workStart", dataStartDate);
-                                            // editor.putString("serviceMenu", String.valueOf(dataServiceMenu));
-                                            // editor.putString("images", dataImages);
-                                            editor.putString("allowPhone", dataPhoneCall);
-                                            editor.putString("service", profession);
+                                            editor.putString("service", serviceLink);
 
                                             editor.commit();
-                                            Snackbar snackbar = Snackbar
-                                                    .make(parent, "Service added successfully", Snackbar.LENGTH_LONG);
-                                            snackbar.show();
+
+                                            Toast.makeText(getApplicationContext(),"Service Added Successfully", Toast.LENGTH_SHORT).show();
+                                            Intent i = new Intent(AddService.this, BottomActivity.class);
+                                            startActivity(i);
+                                            finish();
                                         }
                                     });
                                 }

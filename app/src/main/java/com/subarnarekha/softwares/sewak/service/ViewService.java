@@ -79,8 +79,6 @@ public class ViewService extends Fragment {
                 withData.setVisibility(View.GONE);
             }else {
                 String servicePath = preferences.getString("service","");
-                serviceName = servicePath.split("/")[0];
-                serviceNameText.setText(serviceName);
                 DocumentReference serviceReference = db.document(servicePath);
                 serviceReference.get()
                         .addOnSuccessListener(documentSnapshot -> {
@@ -88,6 +86,7 @@ public class ViewService extends Fragment {
                             progressBar.setProgress(100/images.size());
                             adapter = new ViewServiceAdapter(getContext(),images);
                             viewPager.setAdapter(adapter);
+                            serviceNameText.setText(documentSnapshot.getString("service"));
                             serviceDescription.setText(documentSnapshot.getString("biography"));
                             serviceLocation.setText(documentSnapshot.getString("address"));
                             serviceTime.setText("SINCE :  "+documentSnapshot.getString("workStart"));

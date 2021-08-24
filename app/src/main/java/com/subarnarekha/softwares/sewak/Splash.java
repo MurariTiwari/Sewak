@@ -26,7 +26,6 @@ import com.subarnarekha.softwares.sewak.profile.ProfileScreen;
 import com.subarnarekha.softwares.sewak.service.ViewService;
 
 public class Splash extends AppCompatActivity {
-
     FirebaseUser user;
     FirebaseFirestore db;
     DocumentReference documentReference;

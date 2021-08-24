@@ -124,6 +124,12 @@ public class VerifyOtp extends AppCompatActivity {
                             public void onSuccess(DocumentSnapshot documentSnapshot) {
                                 if(documentSnapshot.exists())
                                 {
+                                    editor.putString("address", (String) documentSnapshot.get("address"));
+                                    editor.putString("name",(String) documentSnapshot.get("name"));
+                                    editor.putString("phoneno", (String) documentSnapshot.get("phoneno"));
+                                    editor.putString("profileimg", (String) documentSnapshot.get("profileimg"));
+                                    editor.putString("service", (String) documentSnapshot.get("service"));
+                                    editor.commit();
                                     startActivity(new Intent(VerifyOtp.this, BottomActivity.class));
                                     finish();
                                 }

@@ -37,7 +37,10 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.subarnarekha.softwares.sewak.Login.LoginForm;
 import com.subarnarekha.softwares.sewak.R;
+import com.subarnarekha.softwares.sewak.addService.SelectProfession;
+import com.subarnarekha.softwares.sewak.home.BottomActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -59,6 +62,7 @@ public class ProfileScreen extends AppCompatActivity {
     DocumentReference documentReference;
     StorageReference storageReference;
     FloatingActionButton camera,edit,save;
+    Boolean call=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +97,7 @@ public class ProfileScreen extends AppCompatActivity {
         userid = user.getUid();
 
         // Initialize data to Profile
+        if(call)
         db.collection("users").document(userid).addSnapshotListener((value, error) -> {
             if(value.exists())
             {
@@ -145,7 +150,15 @@ public class ProfileScreen extends AppCompatActivity {
                     }).check();
         });
 
-        logout.setOnClickListener(v -> FirebaseAuth.getInstance().signOut());
+        logout.setOnClickListener(v -> {
+            call=false;
+            FirebaseAuth.getInstance().signOut();
+            finishAffinity();
+            Intent intent = new Intent(ProfileScreen.this, LoginForm.class);
+
+            startActivity(intent);
+        });
+
 
         save.setOnClickListener(v -> {
             if(newname.getText().toString().trim().length()!=0&&newaddress.getText().toString().length()!=0)

@@ -13,7 +13,8 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.Sewak">
-        <activity android:name=".service.ViewService"></activity>
+        <activity android:name=".searchresults.Results"></activity>
+        <activity android:name=".service.ViewService" />
         <activity android:name=".addService.AddService" />
         <activity android:name=".addService.SelectProfession" />
         <activity android:name=".home.BottomActivity" />
