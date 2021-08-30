@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.subarnarekha.softwares.sewak.R;
@@ -21,6 +22,7 @@ import java.util.List;
 
 public class SelectProfession extends AppCompatActivity {
 RecyclerView datalist;
+ImageView backbtn;
 List<String> names = new ArrayList<>();
 List<Integer> images = new ArrayList<>();
 Adapter adapter;
@@ -29,7 +31,7 @@ Adapter adapter;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_profession);
         datalist = findViewById(R.id.search_results);
-
+        backbtn = findViewById(R.id.backbtn);
         names.add("Barber");
         names.add("Beautician");
         names.add("Carpenter");
@@ -85,6 +87,7 @@ Adapter adapter;
         datalist.setLayoutManager(gridLayoutManager);
         datalist.setAdapter(adapter);
 
+        backbtn.setOnClickListener(v -> finish());
     }
 
 }

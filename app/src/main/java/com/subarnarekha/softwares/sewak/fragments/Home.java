@@ -236,12 +236,20 @@ public class Home extends Fragment {
         });
         return view;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if(preferences.contains("profileimg")&&!preferences.getString("profileimg","").equals("")){
+            Glide.with(getContext()).load(preferences.getString("profileimg","")).into(profile);
+        }
+    }
+
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==100 && resultCode == RESULT_OK){
             Place place = Autocomplete.getPlaceFromIntent(data);
             yourLocation.setText(place.getAddress());
-            //dataAddress = place.getAddress();
             editor.putFloat("lat", (float) place.getLatLng().latitude);
             editor.putFloat("long", (float) place.getLatLng().longitude);
             editor.commit();

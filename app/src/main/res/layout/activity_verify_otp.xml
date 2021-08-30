@@ -112,7 +112,8 @@
         app:pinHeight="40dp"
         app:pinLength="6"
         app:pinWidth="40dp"
-        app:splitWidth="10dp" />
+        app:splitWidth="10dp"
+        />
 
     <ProgressBar
         android:id="@+id/profile_spinner"

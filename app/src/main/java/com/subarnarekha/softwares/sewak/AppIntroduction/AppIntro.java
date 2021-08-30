@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.subarnarekha.softwares.sewak.Login.LoginForm;
-import com.subarnarekha.softwares.sewak.MainActivity;
 import com.subarnarekha.softwares.sewak.R;
 
 public class AppIntro extends AppCompatActivity {
@@ -21,6 +21,8 @@ public class AppIntro extends AppCompatActivity {
     private Button start;
     AppIntroAdapter adapter;
     int position;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,11 @@ public class AppIntro extends AppCompatActivity {
         setContentView(R.layout.activity_app_intro);
 
         viewPager = findViewById(R.id.viewPager);
+
+        sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putString("intro", "done");
+        editor.commit();
 
         progressBar = findViewById(R.id.progressBar);
         progressBar.setProgress(25);
@@ -45,11 +52,12 @@ public class AppIntro extends AppCompatActivity {
             viewPager.setCurrentItem(position+1);
         });
 
-        start = findViewById(R.id.start);
+        start = findViewById(R.id.deleteBtn);
         start.setVisibility(View.GONE);
         start.setOnClickListener(v -> {
             Intent i = new Intent(AppIntro.this, LoginForm.class);
             startActivity(i);
+            finish();
         });
         adapter = new AppIntroAdapter(this);
         viewPager.setAdapter(adapter);

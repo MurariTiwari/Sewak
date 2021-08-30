@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -53,7 +54,7 @@ public class ProfileScreen extends AppCompatActivity {
     EditText newname,newaddress;
     TextView name,address,phoneno,heading;
     View divider1,divider2;
-    ImageView logout,profileimg;
+    ImageView logout,profileimg,backBtn;
     Uri filepath;
     FirebaseUser user;
     String userid="",username="",useraddress="",userphoneno="",userprofileurl="";
@@ -61,6 +62,8 @@ public class ProfileScreen extends AppCompatActivity {
     FirebaseFirestore db;
     DocumentReference documentReference;
     StorageReference storageReference;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     FloatingActionButton camera,edit,save;
     Boolean call=true;
     @Override
@@ -84,12 +87,14 @@ public class ProfileScreen extends AppCompatActivity {
         name = findViewById(R.id.name);
         profileimg = findViewById(R.id.profile_image);
         spinner = findViewById(R.id.profile_spinner);
-
+        backBtn = findViewById(R.id.backBtn);
 
         db = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        sharedPreferences = getSharedPreferences("user", MODE_PRIVATE);
+        editor = sharedPreferences.edit();
        // documentReference=db.collection("users").document(userid);
 
         userphoneno=user.getPhoneNumber();
@@ -126,6 +131,7 @@ public class ProfileScreen extends AppCompatActivity {
                 editProfileScreen();
         });
 
+        backBtn.setOnClickListener(v -> finish());
         camera.setOnClickListener(v -> {
             Dexter.withContext(getApplicationContext())
                     .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -214,18 +220,26 @@ public class ProfileScreen extends AppCompatActivity {
             edit.setVisibility(View.GONE);
             uploader.putFile(filepath)
                     .addOnSuccessListener(taskSnapshot -> uploader.getDownloadUrl().addOnSuccessListener(uri -> {
-
                         Map<String, Object> user = new HashMap<>();
                         user.put("profileimg", uri.toString());
-                            db.collection("users").document(userid).update(user);
-                        spinner.setVisibility(View.GONE);
-                        edit.setVisibility(View.VISIBLE);
+                            db.collection("users").document(userid)
+                                    .update(user)
+                                    .addOnSuccessListener(unused -> {
+                                editor.putString("profileimg", uri.toString() );
+                                editor.commit();
+                                spinner.setVisibility(View.GONE);
+                                edit.setVisibility(View.VISIBLE);
+                                        Toast.makeText(getApplicationContext(),
+                                                "Profile updated Sucessfully",
+                                                Toast.LENGTH_SHORT).show();
+                                    });
                     }))
                     .addOnProgressListener(snapshot -> {
 
                     });
         }
     }
+
 
     public void profileScreen()
     {

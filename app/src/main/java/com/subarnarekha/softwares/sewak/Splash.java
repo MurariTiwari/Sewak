@@ -31,7 +31,6 @@ public class Splash extends AppCompatActivity {
     DocumentReference documentReference;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +54,8 @@ public class Splash extends AppCompatActivity {
                         editor.putString("phoneno", (String) documentSnapshot.get("phoneno"));
                         editor.putString("profileimg", (String) documentSnapshot.get("profileimg"));
                         editor.putString("service", (String) documentSnapshot.get("service"));
+                        editor.putString("contact", (String) documentSnapshot.get("contact"));
+                        editor.putString("incomming", (String) documentSnapshot.get("incomming"));
                         editor.commit();
 
                         Intent i = new Intent(Splash.this, BottomActivity.class);
@@ -63,9 +64,18 @@ public class Splash extends AppCompatActivity {
                     });
         }
         else {
-            Intent i = new Intent(Splash.this, LoginForm.class);
-            startActivity(i);
-            finish();
+            Intent i;
+            if(sharedPreferences.contains("intro")&&
+                    !sharedPreferences.getString("intro","").equals("")) {
+                i = new Intent(Splash.this, LoginForm.class);
+            }else{
+                i = new Intent(Splash.this, AppIntro.class);
+            }
+            new Handler().postDelayed(() -> {
+                startActivity(i);
+                finish();
+            },
+                    4000);
         }
     }
 }

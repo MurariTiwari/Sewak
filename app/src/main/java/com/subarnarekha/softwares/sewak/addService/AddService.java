@@ -101,7 +101,7 @@ public class AddService extends AppCompatActivity {
     List<ServiceItemModel> dataServiceMenu;
     List<String> dataImages;
 
-
+    ImageView backbtn;
 
 
     @Override
@@ -120,6 +120,8 @@ public class AddService extends AppCompatActivity {
         recyclerView = findViewById(R.id.imagelist);
         parent = findViewById(R.id.parent_layout);
         allowPhone = findViewById(R.id.allow_phone_call);
+        backbtn = findViewById(R.id.backbtn);
+
         storageReference = FirebaseStorage.getInstance().getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
@@ -146,7 +148,7 @@ public class AddService extends AppCompatActivity {
                     @SuppressLint("MissingPermission")
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
+                        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
     if(location != null)
     {
        Geocoder geocoder = new Geocoder(AddService.this, Locale.getDefault());
@@ -225,60 +227,61 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
         });
         addView();
         add.setOnClickListener(v -> addView());
+        backbtn.setOnClickListener(v -> finish());
 
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                save.setText("Saving...");
-                save.setActivated(false);
-                dataBio = biography.getText().toString();
-                if(isValid())
-                {
+        save.setOnClickListener(v -> {
+            save.setText("Saving...");
+            save.setActivated(false);
+            dataBio = biography.getText().toString();
+            if(isValid())
+            {
 
-                    String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(dataLat, dataLong));
-                    Map<String, Object> docData = new HashMap<>();
-                    Map<String, Object> docUpdate = new HashMap<>();
-                    docData.put("user", user.getUid());
-                    docData.put("address", dataAddress);
-                    docData.put("longitude", dataLong);
-                    docData.put("latitude", dataLat);
-                    docData.put("biography", dataBio);
-                    docData.put("workStart", dataStartDate);
-                    docData.put("serviceMenu", dataServiceMenu);
-                    docData.put("images", dataImages);
-                    docData.put("allowPhone", dataPhoneCall);
-                    docData.put("service",professionName);
-                    docData.put("geohash",hash);
-                    db.collection(profession.replaceAll("\\s", ""))
-                            .add(docData)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    // Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-                                    String serviceLink = profession.replaceAll("\\s", "")+"/"+documentReference.getId();
-                                    docUpdate.put("service",serviceLink);
-                                    db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            editor.putString("service", serviceLink);
+                String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(dataLat, dataLong));
+                Map<String, Object> docData = new HashMap<>();
+                Map<String, Object> docUpdate = new HashMap<>();
+                docData.put("user", user.getUid());
+                docData.put("address", dataAddress);
+                docData.put("longitude", dataLong);
+                docData.put("latitude", dataLat);
+                docData.put("biography", dataBio);
+                docData.put("workStart", dataStartDate);
+                docData.put("serviceMenu", dataServiceMenu);
+                docData.put("images", dataImages);
+                docData.put("allowPhone", dataPhoneCall);
+                docData.put("service",professionName);
+                docData.put("geohash",hash);
+                db.collection(profession.replaceAll("\\s", ""))
+                        .add(docData)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                // Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+                                String serviceLink = profession.replaceAll("\\s", "")+"/"+documentReference.getId();
+                                docUpdate.put("service",serviceLink);
+                                db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        editor.putString("service", serviceLink);
 
-                                            editor.commit();
+                                        editor.commit();
 
-                                            Toast.makeText(getApplicationContext(),"Service Added Successfully", Toast.LENGTH_SHORT).show();
-                                            Intent i = new Intent(AddService.this, BottomActivity.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    });
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Log.w(TAG, "Error adding document", e);
-                                }
-                            });
-                }
+                                        Toast.makeText(getApplicationContext(),"Service Added Successfully", Toast.LENGTH_SHORT).show();
+                                        Intent i = new Intent(AddService.this, BottomActivity.class);
+                                        startActivity(i);
+                                        finish();
+                                    }
+                                });
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Log.w(TAG, "Error adding document", e);
+                            }
+                        });
+            }
+            else{
+                save.setText("Save");
             }
         });
         upload.setOnClickListener(v -> Dexter.withContext(getApplicationContext())
@@ -319,7 +322,7 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
         else if(dataBio.trim().length()==0 )
         {
             Snackbar snackbar = Snackbar
-                    .make(parent, "Please enter your biography", Snackbar.LENGTH_LONG);
+                    .make(parent, "Please enter your Bio Data", Snackbar.LENGTH_LONG);
             snackbar.show();
             return false;
         }
@@ -345,14 +348,14 @@ fusedLocationProviderClient.getLastLocation().addOnSuccessListener(location -> {
             if(serviceName.getText().toString().trim().equals("")){
 
                 Snackbar snackbar = Snackbar
-                        .make(parent, "Please add a valid Service Menu", Snackbar.LENGTH_LONG);
+                        .make(parent, "Please add your Service Menu", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 return false;
             }
             else if(servicePrice.getText().toString().trim().equals(""))
             {
                 Snackbar snackbar = Snackbar
-                        .make(parent, "Please add a valid Service Menu", Snackbar.LENGTH_LONG);
+                        .make(parent, "Please add your Service Menu", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 return false;
             }

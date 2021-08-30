@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
@@ -50,7 +51,7 @@ public class VerifyOtp extends AppCompatActivity {
         login = findViewById(R.id.login);
         spinner = findViewById(R.id.profile_spinner);
         spinner.setVisibility(View.GONE);
-
+        pin.setTextColor(Color.BLACK);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -117,6 +118,8 @@ public class VerifyOtp extends AppCompatActivity {
                         user.put("name", "");
                         user.put("address", "");
                         user.put("service", "");
+                        user.put("contact", "");
+                        user.put("incomming", "");
 
                         documentReference = db.collection("users").document(fuser.getUid());
                         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -129,6 +132,8 @@ public class VerifyOtp extends AppCompatActivity {
                                     editor.putString("phoneno", (String) documentSnapshot.get("phoneno"));
                                     editor.putString("profileimg", (String) documentSnapshot.get("profileimg"));
                                     editor.putString("service", (String) documentSnapshot.get("service"));
+                                    editor.putString("contact", (String) documentSnapshot.get("contact"));
+                                    editor.putString("incomming", (String) documentSnapshot.get("incomming"));
                                     editor.commit();
                                     startActivity(new Intent(VerifyOtp.this, BottomActivity.class));
                                     finish();

@@ -1,66 +1,105 @@
 package com.subarnarekha.softwares.sewak.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.subarnarekha.softwares.sewak.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CallHistory#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
+
 public class CallHistory extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public CallHistory() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CallHistory.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static CallHistory newInstance(String param1, String param2) {
-        CallHistory fragment = new CallHistory();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
+    SharedPreferences preferences;
+    ConstraintLayout noData;
+    RecyclerView dataView;
+    FirebaseUser loggedinUser;
+    FirebaseFirestore db;
+    ConstraintLayout header;
+    TextView tv1,tv2;
+    LottieAnimationView l1;
+    List<String> img,name,time,phoneno;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_call_history, container, false);
+        preferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
+        View view = inflater.inflate(R.layout.fragment_call_history, container, false);
+        noData = view.findViewById(R.id.layout);
+        dataView = view.findViewById(R.id.with_data);
+        header = view.findViewById(R.id.with_data_header);
+        tv1 = view.findViewById(R.id.textView4);
+        tv2 = view.findViewById(R.id.textView5);
+        l1 = view.findViewById(R.id.lottieAnimationView2);
+
+        dataView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        db = FirebaseFirestore.getInstance();
+
+        loggedinUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        img = new ArrayList<>();
+        name = new ArrayList<>();
+        time = new ArrayList<>();
+        phoneno = new ArrayList<>();
+
+        if(preferences.contains("incomming")) {
+            if (preferences.getString("incomming", "").equals("")) {
+                tv1.setVisibility(View.VISIBLE);
+                tv2.setVisibility(View.VISIBLE);
+                l1.setVisibility(View.VISIBLE);
+                dataView.setVisibility(View.GONE);
+                header.setVisibility(View.GONE);
+            }else{
+                db.collection("users/"+loggedinUser.getUid()+"/incomming")
+                        .get()
+                        .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(isAdded())
+                                {
+
+                                    if (task.isSuccessful()) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            img.add((String) document.get("img"));
+                                            name.add((String) document.get("name"));
+                                            phoneno.add((String) document.get("phoneno"));
+                                            time.add((String) document.get("time"));
+                                        }
+                                    } else {
+
+                                    }
+
+                                    CallHistoryAdapter adapter = new CallHistoryAdapter(getActivity(),img,name,time,phoneno);
+                                    dataView.setAdapter(adapter);
+                                }
+                            }
+                        });
+                tv1.setVisibility(View.GONE);
+                tv2.setVisibility(View.GONE);
+                l1.setVisibility(View.GONE);
+                dataView.setVisibility(View.VISIBLE);
+                header.setVisibility(View.VISIBLE);
+            }
+        }
+        return view;
     }
 }
