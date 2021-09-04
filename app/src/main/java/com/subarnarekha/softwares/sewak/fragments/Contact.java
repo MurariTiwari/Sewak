@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,7 +30,6 @@ import com.subarnarekha.softwares.sewak.R;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Contact extends Fragment {
     SharedPreferences preferences;
     ConstraintLayout noData;
@@ -41,6 +41,7 @@ public class Contact extends Fragment {
     ConstraintLayout header;
     TextView tv1,tv2;
     LottieAnimationView l1;
+    ShimmerFrameLayout shimmer;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         preferences = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE);
@@ -51,9 +52,10 @@ public class Contact extends Fragment {
         tv1 = view.findViewById(R.id.textView4);
         tv2 = view.findViewById(R.id.textView5);
         l1 = view.findViewById(R.id.lottieAnimationView);
+        shimmer = view.findViewById(R.id.search_result_shimmer);
         dataView.setLayoutManager(new LinearLayoutManager(getActivity()));
         db = FirebaseFirestore.getInstance();
-
+        shimmer.setVisibility(View.GONE);
         loggedinUser = FirebaseAuth.getInstance().getCurrentUser();
 
         img = new ArrayList<>();
@@ -69,6 +71,7 @@ public class Contact extends Fragment {
                 dataView.setVisibility(View.GONE);
                 header.setVisibility(View.GONE);
             }else{
+                shimmer.setVisibility(View.VISIBLE);
                 db.collection("users/"+loggedinUser.getUid()+"/contact")
                         .get()
                         .addOnCompleteListener(task -> {
@@ -80,19 +83,21 @@ public class Contact extends Fragment {
                                         name.add((String) document.get("name"));
                                         phoneno.add((String) document.get("phoneno"));
                                         service.add((String) document.get("service"));
+                                        dataView.setVisibility(View.VISIBLE);
+                                        shimmer.setVisibility(View.GONE);
                                     }
-                                } else {
-
                                 }
-
-                                ContactAdapter adapter = new ContactAdapter(getActivity(),name,img,service,phoneno);
+                                ContactAdapter adapter = new ContactAdapter(getActivity(),
+                                        name,
+                                        img,
+                                        service,
+                                        phoneno);
                                 dataView.setAdapter(adapter);
                             }
                         });
                 tv1.setVisibility(View.GONE);
                 tv2.setVisibility(View.GONE);
                 l1.setVisibility(View.GONE);
-                dataView.setVisibility(View.VISIBLE);
                 header.setVisibility(View.VISIBLE);
             }
         }

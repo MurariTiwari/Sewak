@@ -12,13 +12,29 @@
         android:layout_height="match_parent"
         android:background="@color/primary_light">
 
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/search_result_shimmer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline19"
+            app:layout_constraintVertical_bias="0.0">
+
+            <include layout="@layout/activity_search_result_shimmer" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/with_data"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginTop="2dp"
             android:background="@color/primary_light"
-            android:paddingTop="10dp"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/with_data_header"
             app:layout_constraintStart_toStartOf="parent"
@@ -53,6 +69,7 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/guideline21"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,6 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            android:visibility="gone"
             android:gravity="center"
             android:text="You can save sewak profile for future reference"
             android:textColor="@color/secondary_text"
@@ -77,6 +95,7 @@
             android:id="@+id/lottieAnimationView"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/guideline20"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

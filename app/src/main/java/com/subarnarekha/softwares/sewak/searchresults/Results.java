@@ -30,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.subarnarekha.softwares.sewak.BottomSheetFilter;
 import com.subarnarekha.softwares.sewak.R;
 import com.subarnarekha.softwares.sewak.addService.ImageUploadAdapter;
 
@@ -37,8 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Results extends AppCompatActivity {
-
+public class Results extends AppCompatActivity implements BottomSheetFilter.OnDistanceSelectedListener {
+ public int radius = 50;
     SharedPreferences preferences;
     float latitude,longitude;
     FirebaseFirestore db;
@@ -49,7 +50,6 @@ public class Results extends AppCompatActivity {
     String prefessionName;
     ShimmerFrameLayout shimmer;
     FirebaseUser loggedInUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +67,7 @@ public class Results extends AppCompatActivity {
         l1 = findViewById(R.id.lottieAnimationView);
         loggedInUser = FirebaseAuth.getInstance().getCurrentUser();
         filterMenu.setOnClickListener(v -> {
-            PopupMenu popupMenu = new PopupMenu(this,filterMenu);
+            /*PopupMenu popupMenu = new PopupMenu(this,filterMenu);
             popupMenu.getMenuInflater().inflate(R.menu.filter_menu, popupMenu.getMenu());
             popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                 @Override
@@ -86,7 +86,9 @@ public class Results extends AppCompatActivity {
                     return true;
                 }
             });
-            popupMenu.show();
+            popupMenu.show();*/
+            BottomSheetFilter bottomSheetFilter = new BottomSheetFilter(radius);
+            bottomSheetFilter.show(getSupportFragmentManager(),bottomSheetFilter.getTag());
         });
         if(preferences.contains("lat")&&!(preferences.getFloat("lat",0)==0)){
             if(preferences.contains("long")&&!(preferences.getFloat("long",0)==0))
@@ -182,9 +184,15 @@ public class Results extends AppCompatActivity {
                 });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fetchData(radius);
+    }
 
     private void showNoData() {
         searchResult.setVisibility(View.GONE);
+        tv1.setText("No "+prefessionName+" In this Area !");
         tv1.setVisibility(View.VISIBLE);
         tv2.setVisibility(View.VISIBLE);
         l1.setVisibility(View.VISIBLE);
@@ -205,5 +213,11 @@ public class Results extends AppCompatActivity {
         tv1.setVisibility(View.GONE);
         tv2.setVisibility(View.GONE);
         l1.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onSearchRadiusChange(int r) {
+        radius=r;
+        fetchData(r);
     }
 }

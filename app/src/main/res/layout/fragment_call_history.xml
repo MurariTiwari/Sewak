@@ -13,11 +13,26 @@
         android:layout_height="match_parent"
         android:background="@color/primary_light">
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/search_result_shimmer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline19"
+            app:layout_constraintVertical_bias="0.0">
+
+            <include layout="@layout/activity_search_result_shimmer" />
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/with_data"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingTop="10dp"
+            android:layout_marginTop="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -125,7 +125,6 @@ public class ProfileScreen extends AppCompatActivity {
             }
         });
 
-
         edit.setOnClickListener(v -> {
                 heading.setText("Edit Profile");
                 editProfileScreen();

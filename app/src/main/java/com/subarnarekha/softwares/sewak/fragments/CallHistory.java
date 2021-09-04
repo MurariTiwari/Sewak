@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +40,7 @@ public class CallHistory extends Fragment {
     TextView tv1,tv2;
     LottieAnimationView l1;
     List<String> img,name,time,phoneno;
+    ShimmerFrameLayout shimmer;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -47,10 +49,12 @@ public class CallHistory extends Fragment {
         noData = view.findViewById(R.id.layout);
         dataView = view.findViewById(R.id.with_data);
         header = view.findViewById(R.id.with_data_header);
+        shimmer = view.findViewById(R.id.search_result_shimmer);
         tv1 = view.findViewById(R.id.textView4);
         tv2 = view.findViewById(R.id.textView5);
         l1 = view.findViewById(R.id.lottieAnimationView2);
 
+        shimmer.setVisibility(View.GONE);
         dataView.setLayoutManager(new LinearLayoutManager(getActivity()));
         db = FirebaseFirestore.getInstance();
 
@@ -69,6 +73,7 @@ public class CallHistory extends Fragment {
                 dataView.setVisibility(View.GONE);
                 header.setVisibility(View.GONE);
             }else{
+                shimmer.setVisibility(View.VISIBLE);
                 db.collection("users/"+loggedinUser.getUid()+"/incomming")
                         .get()
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -76,18 +81,17 @@ public class CallHistory extends Fragment {
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 if(isAdded())
                                 {
-
                                     if (task.isSuccessful()) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             img.add((String) document.get("img"));
                                             name.add((String) document.get("name"));
                                             phoneno.add((String) document.get("phoneno"));
                                             time.add((String) document.get("time"));
+
+                                            dataView.setVisibility(View.VISIBLE);
+                                            shimmer.setVisibility(View.GONE);
                                         }
-                                    } else {
-
                                     }
-
                                     CallHistoryAdapter adapter = new CallHistoryAdapter(getActivity(),img,name,time,phoneno);
                                     dataView.setAdapter(adapter);
                                 }
@@ -96,7 +100,6 @@ public class CallHistory extends Fragment {
                 tv1.setVisibility(View.GONE);
                 tv2.setVisibility(View.GONE);
                 l1.setVisibility(View.GONE);
-                dataView.setVisibility(View.VISIBLE);
                 header.setVisibility(View.VISIBLE);
             }
         }

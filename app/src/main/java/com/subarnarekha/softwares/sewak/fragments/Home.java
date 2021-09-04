@@ -109,54 +109,53 @@ public class Home extends Fragment {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         Places.initialize(getContext(),API_KEY);
-        names.add("Barber");
-        names.add("Beautician");
-        names.add("Carpenter");
-        names.add("Cook & Catering");
-        names.add("Construction");
-        names.add("Doctor");
-        names.add("Electrician");
-        names.add("Farmer");
-        names.add("GYM");
-        names.add("Light & Sound");
-        names.add("Laundry");
-        names.add("Mechanic");
-        names.add("Milkman");
-        names.add("Musician & Band");
-        names.add("Plumber");
-        names.add("Painter");
-        names.add("Photographer");
-        names.add("Priest");
-        names.add("Poultry Farm");
         names.add("Tutor");
-        names.add("Tent & House");
+        names.add("Beautician");
+        names.add("GYM");
+        names.add("Cook & Catering");
+        names.add("Doctor");
+        names.add("Photographer");
+        names.add("Electrician");
+        names.add("Priest");
+        names.add("Construction");
+        names.add("Painter");
+        names.add("Carpenter");
+        names.add("Mechanic");
         names.add("Tailor");
         names.add("Welder");
+        names.add("Plumber");
+        names.add("Barber");
+        names.add("Milkman");
+        names.add("Farmer");
+        names.add("Light & Sound");
+        names.add("Laundry");
+        names.add("Musician & Band");
+        names.add("Poultry Farm");
+        names.add("Tent & House");
 
-
-        images.add(R.drawable.barber);
-        images.add(R.drawable.makeover);
-        images.add(R.drawable.carpenter);
-        images.add(R.drawable.cooking);
-        images.add(R.drawable.brickwall);
-        images.add(R.drawable.doctor);
-        images.add(R.drawable.electrician);
-        images.add(R.drawable.harvest);
-        images.add(R.drawable.gym);
-        images.add(R.drawable.concert);
-        images.add(R.drawable.washing_clothes);
-        images.add(R.drawable.car_repair);
-        images.add(R.drawable.milk);
-        images.add(R.drawable.concert_2);
-        images.add(R.drawable.plumber);
-        images.add(R.drawable.painter);
-        images.add(R.drawable.photo);
-        images.add(R.drawable.guru);
-        images.add(R.drawable.hen);
         images.add(R.drawable.presentation);
-        images.add(R.drawable.tent);
+        images.add(R.drawable.makeover);
+        images.add(R.drawable.gym);
+        images.add(R.drawable.cooking);
+        images.add(R.drawable.doctor);
+        images.add(R.drawable.photo);
+        images.add(R.drawable.electrician);
+        images.add(R.drawable.guru);
+        images.add(R.drawable.brickwall);
+        images.add(R.drawable.painter);
+        images.add(R.drawable.carpenter);
+        images.add(R.drawable.car_repair);
         images.add(R.drawable.tailor);
         images.add(R.drawable.welder);
+        images.add(R.drawable.plumber);
+        images.add(R.drawable.barber);
+        images.add(R.drawable.milk);
+        images.add(R.drawable.harvest);
+        images.add(R.drawable.concert);
+        images.add(R.drawable.washing_clothes);
+        images.add(R.drawable.concert_2);
+        images.add(R.drawable.hen);
+        images.add(R.drawable.tent);
 
         adapter = new Adapter(names,images,getContext(),"home");
         GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),4,GridLayoutManager.VERTICAL,false);
@@ -224,8 +223,8 @@ public class Home extends Fragment {
                         permissionToken.continuePermissionRequest();
                     }
                 }).check();
-        yourLocation.setFocusable(false);
-        yourLocation.setOnClickListener(v -> {
+                yourLocation.setFocusable(false);
+                yourLocation.setOnClickListener(v -> {
             List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS,
                     Place.Field.LAT_LNG,
                     Place.Field.NAME);
