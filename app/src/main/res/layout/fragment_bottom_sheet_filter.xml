@@ -34,18 +34,18 @@
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/distance"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         app:checkedChip="@+id/chip50"
-        app:selectionRequired="true"
         app:layout_constraintBottom_toTopOf="@+id/apply"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9"
+        app:selectionRequired="true"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip

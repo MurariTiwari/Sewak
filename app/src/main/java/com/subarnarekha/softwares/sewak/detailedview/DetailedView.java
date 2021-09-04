@@ -143,7 +143,7 @@ public class DetailedView extends AppCompatActivity {
                 historyData.put("time", DateFormat.getDateTimeInstance().format(new Date()));
                 historyData.put("name", preferences.getString("name", ""));
                 historyData.put("img", preferences.getString("profileimg", ""));
-                documentReference = db.document("users/" + user+"/incomming/"+phoneNumber);
+                documentReference = db.document("users/" + user+"/incomming/"+preferences.getString("phoneno", ""));
                 documentReference.set(historyData)
                         .addOnSuccessListener(unused -> {
                             docUpdate.put("incomming","yes");

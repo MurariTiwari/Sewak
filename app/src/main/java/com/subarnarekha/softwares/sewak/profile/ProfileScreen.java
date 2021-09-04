@@ -111,11 +111,15 @@ public class ProfileScreen extends AppCompatActivity {
                     username = value.get("name").toString();
                     name.setText(username);
 
+                }else{
+                    editProfileScreen();
                 }
                 if(value.get("address")!=null&& value.get("address")!="")
                 {
                     useraddress = value.get("address").toString();
                     address.setText(useraddress);
+                }else{
+                    editProfileScreen();
                 }
                 if(value.get("profileimg")!=null&&value.get("profileimg")!="")
                 {

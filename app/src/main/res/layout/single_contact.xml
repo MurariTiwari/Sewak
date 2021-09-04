@@ -46,10 +46,10 @@
                 android:layout_marginEnd="60dp"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textStyle="bold"
                 android:text="Cook &amp; Catering"
                 android:textColor="@color/primary_light"
-                android:textSize="18sp"
+                android:textSize="16sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/display_image"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -65,7 +65,7 @@
                 android:maxLines="1"
                 android:text="Unknown"
                 android:textColor="@color/primary_light"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

@@ -31,6 +31,7 @@
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -43,11 +44,11 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginEnd="2dp"
-                android:text="we provide cook and catering services for events please contact us for more details"
-                android:textColor="@color/primary_light"
-                android:textSize="18sp"
                 android:ellipsize="end"
                 android:maxLines="3"
+                android:text="we provide cook and catering services for events please contact us for more details"
+                android:textColor="@color/primary_light"
+                android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/display_image"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -55,6 +56,8 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="8dp"
                 android:orientation="horizontal"
                 android:weightSum="12"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -80,11 +83,11 @@
                     android:layout_marginRight="2dp"
                     android:layout_marginBottom="1dp"
                     android:layout_weight="7"
-                    android:text="Muri Ranchi Jharkhand"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:text="Muri Ranchi Jharkhand"
                     android:textColor="@color/secondary_text"
-                    android:textSize="16sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/service_distance"
@@ -94,10 +97,10 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginRight="1dp"
                     android:layout_marginBottom="1dp"
-                    android:layout_weight="3"
-                    android:text="13 km"
+                    android:layout_weight="4"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:text="13 km"
                     android:textColor="@color/primary_light"
                     android:textSize="16sp" />
             </LinearLayout>

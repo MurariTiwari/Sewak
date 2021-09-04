@@ -25,13 +25,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
+import com.subarnarekha.softwares.sewak.DeleteConfirmation;
 import com.subarnarekha.softwares.sewak.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ViewService extends Fragment {
+public class ViewService extends Fragment implements DeleteConfirmation.DeleteConfirmationListener {
     ViewPager viewPager;
     ViewServiceAdapter adapter;
     FirebaseFirestore db;
@@ -94,22 +95,29 @@ public class ViewService extends Fragment {
         });
 
         deleteBtn.setOnClickListener(v -> {
-            DocumentReference serviceReference = db.document(preferences.getString("service", ""));
-            serviceReference.delete().addOnSuccessListener(unused -> {
-                Map<String, Object> docUpdate = new HashMap<>();
-                docUpdate.put("service","");
-                db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        editor.putString("service", "");
-                        editor.commit();
-                        Toast.makeText(getContext(),"Service Deleted Successfully", Toast.LENGTH_SHORT).show();
-                        fetchData();
-                    }
-                });
-            });
+            DeleteConfirmation deleteConfirmation = new DeleteConfirmation();
+            deleteConfirmation.setTargetFragment(ViewService.this,1);
+            deleteConfirmation.show(getActivity().getSupportFragmentManager(), "Delete");
+            //deleteData();
         });
         return view;
+    }
+
+    private void deleteData() {
+        DocumentReference serviceReference = db.document(preferences.getString("service", ""));
+        serviceReference.delete().addOnSuccessListener(unused -> {
+            Map<String, Object> docUpdate = new HashMap<>();
+            docUpdate.put("service","");
+            db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    editor.putString("service", "");
+                    editor.commit();
+                    Toast.makeText(getContext(),"Service Deleted Successfully", Toast.LENGTH_SHORT).show();
+                    fetchData();
+                }
+            });
+        });
     }
 
     private void fetchData() {
@@ -163,4 +171,8 @@ public class ViewService extends Fragment {
 
     }
 
+    @Override
+    public void onDeleteConfirmation() {
+        deleteData();
+    }
 }

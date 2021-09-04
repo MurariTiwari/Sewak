@@ -62,7 +62,8 @@ public class Contact extends Fragment {
         name = new ArrayList<>();
         service = new ArrayList<>();
         phoneno = new ArrayList<>();
-
+        if(isAdded())
+        {
         if(preferences.contains("contact")) {
             if (preferences.getString("contact", "").equals("")) {
                 tv1.setVisibility(View.VISIBLE);
@@ -75,8 +76,7 @@ public class Contact extends Fragment {
                 db.collection("users/"+loggedinUser.getUid()+"/contact")
                         .get()
                         .addOnCompleteListener(task -> {
-                            if(isAdded())
-                            {
+
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         img.add((String) document.get("img"));
@@ -93,14 +93,14 @@ public class Contact extends Fragment {
                                         service,
                                         phoneno);
                                 dataView.setAdapter(adapter);
-                            }
+
                         });
                 tv1.setVisibility(View.GONE);
                 tv2.setVisibility(View.GONE);
                 l1.setVisibility(View.GONE);
                 header.setVisibility(View.VISIBLE);
             }
-        }
+        }}
         return view;
     }
 }

@@ -64,7 +64,8 @@ public class CallHistory extends Fragment {
         name = new ArrayList<>();
         time = new ArrayList<>();
         phoneno = new ArrayList<>();
-
+        if(isAdded())
+        {
         if(preferences.contains("incomming")) {
             if (preferences.getString("incomming", "").equals("")) {
                 tv1.setVisibility(View.VISIBLE);
@@ -79,8 +80,6 @@ public class CallHistory extends Fragment {
                         .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if(isAdded())
-                                {
                                     if (task.isSuccessful()) {
                                         for (QueryDocumentSnapshot document : task.getResult()) {
                                             img.add((String) document.get("img"));
@@ -95,14 +94,13 @@ public class CallHistory extends Fragment {
                                     CallHistoryAdapter adapter = new CallHistoryAdapter(getActivity(),img,name,time,phoneno);
                                     dataView.setAdapter(adapter);
                                 }
-                            }
                         });
                 tv1.setVisibility(View.GONE);
                 tv2.setVisibility(View.GONE);
                 l1.setVisibility(View.GONE);
                 header.setVisibility(View.VISIBLE);
             }
-        }
+        }}
         return view;
     }
 }
