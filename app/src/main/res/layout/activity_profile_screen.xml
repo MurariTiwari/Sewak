@@ -151,29 +151,28 @@
         android:layout_marginEnd="15dp"
         android:text="John Smith"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline15"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
-        app:layout_constraintTop_toTopOf="@+id/guideline11"
-        />
+        app:layout_constraintTop_toTopOf="@+id/guideline11" />
+
     <EditText
         android:id="@+id/newname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:padding="10dp"
-        android:hint="Enter your Name"
-        android:textColorHint="@color/secondary_text"
         android:background="@drawable/rounded_corner"
+        android:hint="Enter your Name"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/secondary_text"
+        android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline15"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
-        app:layout_constraintTop_toTopOf="@+id/guideline11"
-        android:visibility="gone"
-        />
+        app:layout_constraintTop_toTopOf="@+id/guideline11" />
 
     <TextView
         android:id="@+id/phone"
@@ -183,7 +182,7 @@
         android:layout_marginEnd="15dp"
         android:text=""
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline16"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
@@ -221,29 +220,28 @@
         android:layout_marginEnd="15dp"
         android:text="Mumbai"
         android:textColor="@color/white"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
-        app:layout_constraintTop_toTopOf="@+id/guideline16"
-        />
+        app:layout_constraintTop_toTopOf="@+id/guideline16" />
 
     <EditText
         android:id="@+id/newaddress"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:padding="10dp"
-        android:hint="Enter your Address"
-        android:textColorHint="@color/secondary_text"
         android:background="@drawable/rounded_corner"
+        android:hint="Enter your Address"
+        android:inputType="text"
+        android:padding="10dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/secondary_text"
+        android:textSize="16sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/guideline17"
         app:layout_constraintEnd_toStartOf="@+id/guideline14"
         app:layout_constraintStart_toStartOf="@+id/guideline13"
-        app:layout_constraintTop_toTopOf="@+id/guideline16"
-        android:visibility="gone"/>
+        app:layout_constraintTop_toTopOf="@+id/guideline16" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline18"

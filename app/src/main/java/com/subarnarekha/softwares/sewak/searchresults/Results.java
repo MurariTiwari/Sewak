@@ -35,6 +35,8 @@ import com.subarnarekha.softwares.sewak.R;
 import com.subarnarekha.softwares.sewak.addService.ImageUploadAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -67,26 +69,6 @@ public class Results extends AppCompatActivity implements BottomSheetFilter.OnDi
         l1 = findViewById(R.id.lottieAnimationView);
         loggedInUser = FirebaseAuth.getInstance().getCurrentUser();
         filterMenu.setOnClickListener(v -> {
-            /*PopupMenu popupMenu = new PopupMenu(this,filterMenu);
-            popupMenu.getMenuInflater().inflate(R.menu.filter_menu, popupMenu.getMenu());
-            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId())
-                    {
-                        case R.id.km10: fetchData(10);
-                            break;
-                        case R.id.km25: fetchData(25);
-                            break;
-                        case R.id.km50: fetchData(50);
-                            break;
-                        case R.id.km100: fetchData(100);
-                            break;
-                    }
-                    return true;
-                }
-            });
-            popupMenu.show();*/
             BottomSheetFilter bottomSheetFilter = new BottomSheetFilter(radius);
             bottomSheetFilter.show(getSupportFragmentManager(),bottomSheetFilter.getTag());
         });
@@ -107,18 +89,7 @@ public class Results extends AppCompatActivity implements BottomSheetFilter.OnDi
     public  void fetchData(int radius)
     {
         showShimmer();
-
-        List<String> address = new ArrayList<>();
-        List<String> desc = new ArrayList<>();
-        List<String> from = new ArrayList<>();
-        List<String> service = new ArrayList<>();
-        List<String> distance = new ArrayList<>();
-        List<String> images = new ArrayList<>();
-        List<String> user = new ArrayList<>();
-        List<String> allowPhone = new ArrayList<>();
-        List<List<String>> allImages = new ArrayList<>();
-        ArrayList<ArrayList<Map<String,Object>>> serviceMenu = new ArrayList<>();
-
+        ArrayList<Modal> recyclerdata = new ArrayList<>();
         latitude=preferences.getFloat("lat",0);
         longitude=preferences.getFloat("long",0);
         header.setText(prefessionName);
@@ -147,36 +118,34 @@ public class Results extends AppCompatActivity implements BottomSheetFilter.OnDi
                                 double distanceInM = GeoFireUtils.getDistanceBetween(docLocation, center);
                                 if (distanceInM <= radiusInM
                                          && !(doc.getString("user")).equals(loggedInUser.getUid())) {
-                                    desc.add( doc.getString("biography"));
-                                    address.add(doc.getString("address"));
-                                    from.add(doc.getString("workStart"));
-                                    user.add(doc.getString("user"));
-                                    service.add(doc.getString("service"));
-                                    allowPhone.add(doc.getString("allowPhone"));
-                                    distance.add(String.format("%.1f",(distanceInM/1000))+"Km");
                                     ArrayList<String> temp = (ArrayList<String>) doc.get("images");
-                                    images.add(temp.get(0));
-                                    allImages.add(temp);
                                     ArrayList<Map<String,Object>> serviceItemModel = (ArrayList<Map<String, Object>>) doc.get("serviceMenu");
-                                    serviceMenu.add(serviceItemModel);
+                                    recyclerdata.add(new Modal(doc.getString("biography"),
+                                            doc.getString("address"),
+                                            doc.getString("workStart"),
+                                            doc.getString("user"),
+                                            doc.getString("service"),
+                                            doc.getString("allowPhone"),
+                                            (distanceInM/1000),
+                                            temp.get(0),
+                                            temp,serviceItemModel,
+                                            doc.getString("phoneNumber")));
+
                                 }
                             }
                         }
                     }
-                    if(desc.size()!=0)
-                    {
+                    if(recyclerdata.size()!=0)
+                    { Collections.sort(recyclerdata, (lhs, rhs) -> {
+                        if(lhs.getDistance() < rhs.getDistance()) {
+                            return -1;
+                        } else {
+                            return 1;
+                        }
+                    });
                         Adapter adapter = new Adapter(
                                 this,
-                                desc,
-                                address,
-                                distance,
-                                images,
-                                from,
-                                service,
-                                allImages,
-                                serviceMenu,
-                                user,
-                                allowPhone );
+                                recyclerdata );
                         searchResult.setAdapter(adapter);
                         showData();
                     }

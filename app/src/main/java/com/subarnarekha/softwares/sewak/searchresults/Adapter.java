@@ -25,34 +25,12 @@ import java.util.Map;
 public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     LayoutInflater layoutInflater;
     Context ctx;
-    List<String> desc,address,distance,images,from,service;
-    List<List<String>> allImages;
-    List<String> user;
-    List<String> allowPhone;
-    ArrayList<ArrayList<Map<String,Object>>> serviceMenu;
+    ArrayList<Modal> data;
     public Adapter(Context context,
-                   List<String> desc,
-                   List<String> address,
-                   List<String> distance,
-                   List<String> images,
-                   List<String> from,
-                   List<String> service,
-                   List<List<String>> allImages,
-                   ArrayList<ArrayList<Map<String,Object>>> serviceMenu,
-                   List<String> user,
-    List<String> allowPhone) {
+                   ArrayList<Modal> data) {
         this.layoutInflater = LayoutInflater.from(context);
-        this.desc = desc;
-        this.address = address;
-        this.distance = distance;
-        this.images = images;
+        this.data=data;
         this.ctx=context;
-        this.from=from;
-        this.service=service;
-        this.allImages=allImages;
-        this.serviceMenu=serviceMenu;
-        this.user=user;
-        this.allowPhone=allowPhone;
     }
 
     @NonNull
@@ -65,14 +43,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        holder.desc.setText(desc.get(position));
-        holder.address.setText(address.get(position));
-        holder.distance.setText(distance.get(position));
-        Glide.with(ctx).load(images.get(position)).into(holder.img);
+        holder.desc.setText(data.get(position).getDesc());
+        holder.address.setText(data.get(position).getAddress());
+        holder.distance.setText(String.format("%.1f",data.get(position).getDistance())+"Km");
+        Glide.with(ctx).load(data.get(position).getImages()).into(holder.img);
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Map<String,Object>> singleServiceMenu = serviceMenu.get(position);
+                ArrayList<Map<String,Object>> singleServiceMenu = data.get(position).getServiceMenu();
                 ArrayList<String> serviceMenu = new ArrayList<>();
                 ArrayList<String> priceMenu = new ArrayList<>();
                 for(int i=0;i<singleServiceMenu.size();i++)
@@ -82,13 +60,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                     priceMenu.add(item.get("servicePrice").toString());
                 }
                 Intent i = new Intent(ctx, DetailedView.class);
-                i.putExtra("desc",desc.get(position));
-                i.putExtra("address",address.get(position));
-                i.putExtra("from",from.get(position));
-                i.putExtra("user",user.get(position));
-                i.putExtra("service",service.get(position));
-                i.putExtra("allow",allowPhone.get(position));
-                i.putStringArrayListExtra("images", (ArrayList<String>) allImages.get(position));
+                i.putExtra("desc",data.get(position).getDesc());
+                i.putExtra("address",data.get(position).getAddress());
+                i.putExtra("from",data.get(position).getFrom());
+                i.putExtra("user",data.get(position).getUser());
+                i.putExtra("service",data.get(position).getService());
+                i.putExtra("allow",data.get(position).getAllowPhone());
+                i.putExtra("servicePhoneNumber",data.get(position).getServiceNumber());
+                i.putStringArrayListExtra("images", (ArrayList<String>) data.get(position).getAllImages());
                 i.putStringArrayListExtra("serviceMenu", (ArrayList<String>) serviceMenu);
                 i.putStringArrayListExtra("priceMenu", (ArrayList<String>) priceMenu);
                 ctx.startActivity(i);
@@ -98,7 +77,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return desc.size();
+        return data.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
         TextView desc,address,distance;

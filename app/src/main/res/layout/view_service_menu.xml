@@ -18,7 +18,7 @@
         android:padding="5dp"
         android:text="Xerox"
         android:textColor="@color/secondary_text"
-        android:textSize="18dp" />
+        android:textSize="14dp" />
 
     <TextView
         android:id="@+id/view_service_price"
@@ -29,7 +29,7 @@
         android:padding="5dp"
         android:text="3"
         android:textColor="@color/secondary_text"
-        android:textSize="18dp" />
+        android:textSize="14dp" />
 </LinearLayout>
     <View
         android:id="@+id/divider3"

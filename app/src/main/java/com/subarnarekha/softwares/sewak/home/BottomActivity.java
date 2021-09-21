@@ -4,13 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -87,6 +92,21 @@ public class BottomActivity extends AppCompatActivity {
         });
         closeBtn.setOnClickListener(v -> dialog.dismiss());
         deleteBtn.setOnClickListener(v -> deleteImages());
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wificon = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo netcon = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if(!((wificon!=null && wificon.isConnected())||(netcon!=null && netcon.isConnected())))
+        {
+            AlertDialog.Builder builder=new AlertDialog.Builder(BottomActivity.this);
+            builder.setMessage("You are offline please check your internet connection")
+                    .setTitle("No Internet Connection")
+                    .setCancelable(true)
+                    .setPositiveButton("Connect", (dialog, which) -> startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS)))
+                    .setNegativeButton("cancle", (dialog, which) -> {
+                    });
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
     }
 
     private void deleteImages() {

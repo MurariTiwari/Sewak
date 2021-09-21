@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/parent_layout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/primary_light"
     tools:context=".addService.AddService">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +30,7 @@
             app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
 
         <TextView
-            android:id="@+id/search_header"
+            android:id="@+id/service_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="75dp"
@@ -44,7 +45,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,10 +57,35 @@
             android:background="@color/primary_light"
             android:orientation="vertical">
 
-            <LinearLayout
+            <com.shuhart.stepview.StepView
+                android:id="@+id/step_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginBottom="20dp"
+                android:padding="16dp"
+                app:sv_animationType="Line"
+                app:sv_doneCircleColor="@color/white"
+                app:sv_doneCircleRadius="12dp"
+                app:sv_doneStepLineColor="@color/white"
+                app:sv_doneStepMarkColor="@color/primary_dark"
+                app:sv_nextStepLineColor="@color/secondary_text"
+                app:sv_nextTextColor="@color/secondary_text"
+                app:sv_selectedCircleColor="@color/white"
+                app:sv_selectedCircleRadius="12dp"
+                app:sv_selectedStepNumberColor="@color/primary_dark"
+                app:sv_selectedTextColor="@color/white"
+                app:sv_stepLineWidth="1dp"
+                app:sv_stepNumberTextSize="12sp"
+                app:sv_stepPadding="4dp"
+                app:sv_stepViewStyle="@style/StepView"
+                app:sv_stepsNumber="4" />
+
+            <LinearLayout
+                android:id="@+id/basic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -68,223 +94,226 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="0dp"
-                    android:layout_weight="1"
                     android:padding="10dp"
-                    android:text="Profession"
+                    android:text="Work Location"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/work_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/rounded_corner"
+                    android:drawableRight="@drawable/ic_baseline_location_on_24"
+                    android:hint="Select your work location"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:padding="10dp"
+                    android:scrollbars="vertical"
+                    android:text="Bio data"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/bio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/rounded_corner"
+                    android:hint="Enter brief Bio data"
+                    android:inputType="textMultiLine"
+                    android:lines="4"
+                    android:padding="10dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/secondary_text"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="0dp"
+                    android:padding="10dp"
+                    android:text="Working From"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/profession"
+                    android:id="@+id/selectdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/rounded_corner"
+                    android:inputType="text"
+                    android:padding="10dp"
+                    android:text="Date you started working from"
+                    android:textColor="@color/secondary_text"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/service"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="0dp"
-                    android:layout_weight="1"
                     android:padding="10dp"
-                    android:text="Plumber"
+                    android:text="Service Menu"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:textStyle="italic" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+
+                <LinearLayout
+                    android:id="@+id/layoutList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <Button
+                    android:id="@+id/floatingActionButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/white"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_baseline_add_24"
+                    android:padding="8dp"
+                    android:text="Add"
+                    android:textColor="@color/primary_dark" />
 
             </LinearLayout>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="0dp"
-                android:padding="10dp"
-                android:text="Work Location"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/work_location"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/rounded_corner"
-                android:drawableRight="@drawable/ic_baseline_location_on_24"
-                android:hint="Select your work location"
-                android:inputType="text"
-                android:padding="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/secondary_text"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="0dp"
-                android:padding="10dp"
-                android:text="Bio data"
-                android:scrollbars="vertical"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/bio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/rounded_corner"
-                android:hint="Enter brief Bio data"
-                android:inputType="textMultiLine"
-                android:lines="4"
-                android:padding="10dp"
-                android:textColor="@color/white"
-                android:textColorHint="@color/secondary_text"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="0dp"
-                android:padding="10dp"
-                android:text="Working From"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/selectdate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="2dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/rounded_corner"
-                android:inputType="text"
-                android:padding="10dp"
-                android:text="Date you started working from"
-                android:textColor="@color/secondary_text"
-                android:textSize="18sp" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="0dp"
-                android:padding="10dp"
-                android:text="Service Menu"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-
             <LinearLayout
-                android:id="@+id/layoutList"
+                android:id="@+id/images"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <Button
-                android:id="@+id/floatingActionButton"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="@color/white"
-                android:clickable="true"
-                android:drawableLeft="@drawable/ic_baseline_add_24"
-                android:padding="8dp"
-                android:text="Add"
-                android:textColor="@color/primary_dark" />
-
-
-            <Button
-                android:id="@+id/upload"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:backgroundTint="@color/white"
-                android:clickable="true"
-                android:drawableLeft="@drawable/ic_baseline_image_24"
-                android:padding="8dp"
-                android:text="Upload Images"
-                android:textColor="@color/primary_dark" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imagelist"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="7">
-
-                <TextView
-                    android:layout_width="0dp"
+                <Button
+                    android:id="@+id/upload"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_weight="5"
-                    android:padding="10dp"
-                    android:text="Allow Phone calls "
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    android:textStyle="normal" />
+                    android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/white"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_baseline_image_24"
+                    android:padding="8dp"
+                    android:text="Upload Images"
+                    android:textColor="@color/primary_dark" />
 
-                <Switch
-                    android:id="@+id/allow_phone_call"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/imagelist"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/submit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="7">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="0dp"
+                        android:layout_weight="5"
+                        android:padding="10dp"
+                        android:text="Allow Phone calls "
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="normal" />
+
+                    <Switch
+                        android:id="@+id/allow_phone_call"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="2"
+                        android:checked="true"
+                        android:paddingRight="15dp"
+                        android:switchMinWidth="60dp" />
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/savedata"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="2"
-                    android:checked="true"
-                    android:paddingRight="15dp"
-                    android:switchMinWidth="60dp" />
+                    android:layout_margin="15dp"
+                    android:backgroundTint="@color/white"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_baseline_save_24"
+                    android:padding="8dp"
+                    android:text="Save"
+                    android:textColor="@color/primary_dark" />
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/savedata"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_next"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_margin="15dp"
-                android:backgroundTint="@color/white"
+                android:layout_margin="30dp"
                 android:clickable="true"
-                android:drawableLeft="@drawable/ic_baseline_save_24"
-                android:padding="8dp"
-                android:text="Save"
-                android:textColor="@color/primary_dark" />
-
+                app:srcCompat="@drawable/arrow_right" />
 
         </LinearLayout>
     </ScrollView>

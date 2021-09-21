@@ -20,7 +20,7 @@
         android:padding="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/secondary_text"
-        android:textSize="20sp" />
+        android:textSize="14sp" />
 
     <EditText
         android:id="@+id/add_price"
@@ -35,7 +35,7 @@
         android:padding="10dp"
         android:textColor="@color/white"
         android:textColorHint="@color/secondary_text"
-        android:textSize="20sp" />
+        android:textSize="14sp" />
 
     <ImageView
         android:id="@+id/close_service_menu"

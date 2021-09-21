@@ -25,11 +25,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     List<Integer> images;
     String activity;
     LayoutInflater layoutInflater;
+    Context context;
     public Adapter(List<String> title, List<Integer> images, Context context, String activity) {
         this.title = title;
         this.images = images;
         this.layoutInflater = LayoutInflater.from(context);
         this.activity = activity;
+        this.context=context;
     }
 
 
@@ -49,11 +51,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             if(activity.equals("home")){
                 Intent i = new Intent(v.getContext(), Results.class);
                 i.putExtra("profession",title.get(position));
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(i);
             }
             else if(activity.equals("service")){
                 Intent i = new Intent(v.getContext(), AddService.class);
                 i.putExtra("profession",title.get(position));
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(i);
             }
         });

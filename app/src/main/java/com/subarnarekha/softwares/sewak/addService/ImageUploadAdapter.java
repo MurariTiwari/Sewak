@@ -1,6 +1,7 @@
 package com.subarnarekha.softwares.sewak.addService;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,11 @@ import java.util.List;
 
 public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.MyViewHolder> {
     List<String> fileName,status;
-
-    public ImageUploadAdapter(List<String> fileName, List<String> status) {
+    List<Uri> imageUri;
+    public ImageUploadAdapter(List<String> fileName, List<String> status,List<Uri> imageUri) {
         this.fileName = fileName;
         this.status = status;
+        this.imageUri = imageUri;
     }
 
     @NonNull
@@ -38,6 +40,7 @@ public class ImageUploadAdapter extends RecyclerView.Adapter<ImageUploadAdapter.
 
         String file = fileName.get(position);
         holder.fileName.setText(file);
+        holder.imageIcon.setImageURI(imageUri.get(position));
         String fileStatus = status.get(position);
         if(fileStatus.equals("loading")){
             holder.statusSpinner.setVisibility(View.VISIBLE);

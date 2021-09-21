@@ -49,6 +49,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.subarnarekha.softwares.sewak.AboutUs;
 import com.subarnarekha.softwares.sewak.R;
 import com.subarnarekha.softwares.sewak.Splash;
 import com.subarnarekha.softwares.sewak.addService.Adapter;
@@ -82,7 +83,7 @@ public class Home extends Fragment {
     ImageView menubar;
     SharedPreferences preferences;
     FusedLocationProviderClient fusedLocationProviderClient;
-    String API_KEY = "AIzaSyBxhYXmUwZeB-Tp17KHEgeHpDoAGtXWebI";
+    String API_KEY = "AIzaSyBxhYXmUwZeB-Tp17KHEgeHpDoAGtXWebI";//My Map Project
     SharedPreferences.Editor editor;
 
     public Home() {
@@ -177,15 +178,17 @@ public class Home extends Fragment {
                    //switch (item.getItemId())
                     //{
 
-                       // Intent i = new Intent(getActivity(), Results.class);
-                       // startActivity(i);
+                       Intent i = new Intent(getActivity(), AboutUs.class);
+                       startActivity(i);
                    // }
                     return false;
                 }
             });
             popupMenu.show();
         });
-
+        if(preferences.contains("lat")&& preferences.getFloat("lat",0)!=0){
+            yourLocation.setText(preferences.getString("displayaddress",""));
+        } else {
         Dexter.withContext(getContext())
                 .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                 .withListener(new PermissionListener() {
@@ -203,6 +206,7 @@ public class Home extends Fragment {
                                     //dataAddress = addresses.get(0).getAddressLine(0);
                                     editor.putFloat("lat", (float) location.getLatitude());
                                     editor.putFloat("long", (float) location.getLongitude());
+                                    editor.putString("displayaddress",addresses.get(0).getAddressLine(0));
                                     editor.commit();
                                     // workLocation.setText(addresses.get(0).getPostalCode());
                                 } catch (IOException e) {
@@ -224,7 +228,8 @@ public class Home extends Fragment {
                     }
                 }).check();
                 yourLocation.setFocusable(false);
-                yourLocation.setOnClickListener(v -> {
+                }
+        yourLocation.setOnClickListener(v -> {
             List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS,
                     Place.Field.LAT_LNG,
                     Place.Field.NAME);
@@ -251,6 +256,7 @@ public class Home extends Fragment {
             yourLocation.setText(place.getAddress());
             editor.putFloat("lat", (float) place.getLatLng().latitude);
             editor.putFloat("long", (float) place.getLatLng().longitude);
+            editor.putString("displayaddress",place.getAddress());
             editor.commit();
         }
         else if(resultCode == AutocompleteActivity.RESULT_ERROR){

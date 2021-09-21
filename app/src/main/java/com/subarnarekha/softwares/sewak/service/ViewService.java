@@ -1,5 +1,6 @@
 package com.subarnarekha.softwares.sewak.service;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +30,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.subarnarekha.softwares.sewak.DeleteConfirmation;
 import com.subarnarekha.softwares.sewak.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -108,14 +113,19 @@ public class ViewService extends Fragment implements DeleteConfirmation.DeleteCo
         serviceReference.delete().addOnSuccessListener(unused -> {
             Map<String, Object> docUpdate = new HashMap<>();
             docUpdate.put("service","");
-            db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                    editor.putString("service", "");
-                    editor.commit();
-                    Toast.makeText(getContext(),"Service Deleted Successfully", Toast.LENGTH_SHORT).show();
-                    fetchData();
-                }
+            db.collection("users").document(user.getUid()).update(docUpdate).addOnSuccessListener(unused1 -> {
+                editor.putString("service", "");
+                editor.commit();
+                Toast.makeText(getContext(),"Service Deleted Successfully", Toast.LENGTH_SHORT).show();
+                fetchData();
+            }).addOnFailureListener(e -> {
+                withoutdata.setVisibility(View.VISIBLE);
+                withData.setVisibility(View.GONE);
+                header.setVisibility(View.GONE);
+            }).addOnCanceledListener(() -> {
+                withoutdata.setVisibility(View.VISIBLE);
+                withData.setVisibility(View.GONE);
+                header.setVisibility(View.GONE);
             });
         });
     }
@@ -157,6 +167,14 @@ public class ViewService extends Fragment implements DeleteConfirmation.DeleteCo
                                     viewServiceLayout.setVisibility(View.VISIBLE);
                                 }
                             }
+                        }).addOnFailureListener(e -> {
+                            withoutdata.setVisibility(View.VISIBLE);
+                            withData.setVisibility(View.GONE);
+                            header.setVisibility(View.GONE);
+                        }).addOnCanceledListener(() -> {
+                            withoutdata.setVisibility(View.VISIBLE);
+                            withData.setVisibility(View.GONE);
+                            header.setVisibility(View.GONE);
                         });
 
             }

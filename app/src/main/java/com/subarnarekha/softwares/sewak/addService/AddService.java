@@ -59,6 +59,7 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.shuhart.stepview.StepView;
 import com.subarnarekha.softwares.sewak.R;
 import com.subarnarekha.softwares.sewak.home.BottomActivity;
 
@@ -75,11 +76,12 @@ import java.util.Map;
 
 public class AddService extends AppCompatActivity {
 
-    TextView startDate,proffesionView;
+    TextView startDate,header;
     EditText workLocation,biography;
+    StepView stepView;
     Switch allowPhone;
     DatePickerDialog.OnDateSetListener dateChangedListener;
-    LinearLayout layoutList;
+    LinearLayout layoutList,basicLayout,serviceLayout,imagesLayout,submitLayout;
     Button add,save,upload;
     String API_KEY = "AIzaSyBxhYXmUwZeB-Tp17KHEgeHpDoAGtXWebI";
     String profession,professionName;
@@ -87,8 +89,10 @@ public class AddService extends AppCompatActivity {
     StorageReference storageReference;
     FirebaseFirestore db;
     FirebaseUser user;
+    FloatingActionButton addNext;
     DocumentReference documentReference;
     List<String> files,status;
+    List<Uri> imageUri;
     RecyclerView recyclerView;
     ImageUploadAdapter adapter;
     FusedLocationProviderClient fusedLocationProviderClient;
@@ -114,34 +118,111 @@ public class AddService extends AppCompatActivity {
         workLocation = findViewById(R.id.work_location);
         layoutList = findViewById(R.id.layoutList);
         add = findViewById(R.id.floatingActionButton);
-        proffesionView = findViewById(R.id.profession);
+        header = findViewById(R.id.service_header);
         save = findViewById(R.id.savedata);
         upload = findViewById(R.id.upload);
         recyclerView = findViewById(R.id.imagelist);
         parent = findViewById(R.id.parent_layout);
         allowPhone = findViewById(R.id.allow_phone_call);
         backbtn = findViewById(R.id.backbtn);
-
+        stepView = findViewById(R.id.step_view);
+        addNext = findViewById(R.id.add_next);
+        basicLayout = findViewById(R.id.basic);
+        serviceLayout = findViewById(R.id.service);
+        imagesLayout = findViewById(R.id.images);
+        submitLayout = findViewById(R.id.submit);
         storageReference = FirebaseStorage.getInstance().getReference();
         user = FirebaseAuth.getInstance().getCurrentUser();
         db = FirebaseFirestore.getInstance();
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         files = new ArrayList<>();
         status = new ArrayList<>();
-
+        imageUri = new ArrayList<>();
         dataImages =new ArrayList<>();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         professionName = profession = getIntent().getStringExtra("profession");
-        proffesionView.setText(profession);
-        adapter = new ImageUploadAdapter(files,status);
+        header.setText("Add "+profession);
+        adapter = new ImageUploadAdapter(files,status,imageUri);
         recyclerView.setAdapter(adapter);
 
 
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
         editor = preferences.edit();
 
+        stepView.getState().steps(new ArrayList<String>(){{
+            add("Basic");
+            add("Service");
+            add("Images");
+            add("Submit");
+        }}).commit();
+        stepView.setOnStepClickListener(step -> {
+            // 0 is the first step
+            if(step<stepView.getCurrentStep())
+            switch(step){
+                case 0:
+                        basicLayout.setVisibility(View.VISIBLE);
+                        serviceLayout.setVisibility(View.GONE);
+                        imagesLayout.setVisibility(View.GONE);
+                        submitLayout.setVisibility(View.GONE);
+                        addNext.setVisibility(View.VISIBLE);
+                        stepView.go(step, true);
+                    break;
+                case 1:
+                        basicLayout.setVisibility(View.GONE);
+                        serviceLayout.setVisibility(View.VISIBLE);
+                        imagesLayout.setVisibility(View.GONE);
+                        submitLayout.setVisibility(View.GONE);
+                        addNext.setVisibility(View.VISIBLE);
+                        stepView.go(step, true);
+                    break;
+                case 2:
+                        basicLayout.setVisibility(View.GONE);
+                        serviceLayout.setVisibility(View.GONE);
+                        imagesLayout.setVisibility(View.VISIBLE);
+                        submitLayout.setVisibility(View.GONE);
+                        addNext.setVisibility(View.GONE);
+                        addNext.setVisibility(View.VISIBLE);
+                        stepView.go(step, true);
+                    break;
+            }
+        });
 
+        addNext.setOnClickListener(v -> {
+                switch(stepView.getCurrentStep()){
+                    case 0:
+                        if(isValidBasic())
+                        {
+                            basicLayout.setVisibility(View.GONE);
+                            serviceLayout.setVisibility(View.VISIBLE);
+                            imagesLayout.setVisibility(View.GONE);
+                            submitLayout.setVisibility(View.GONE);
+                            stepView.go(stepView.getCurrentStep()+1, true);
+                        }
+                        break;
+                    case 1:
+                        if(isValidService()){
+                            basicLayout.setVisibility(View.GONE);
+                            serviceLayout.setVisibility(View.GONE);
+                            imagesLayout.setVisibility(View.VISIBLE);
+                            submitLayout.setVisibility(View.GONE);
+                            stepView.go(stepView.getCurrentStep()+1, true);
+                        }
+                        break;
+                    case 2:
+                        if(isValidImages())
+                        {
+                            basicLayout.setVisibility(View.GONE);
+                            serviceLayout.setVisibility(View.GONE);
+                            imagesLayout.setVisibility(View.GONE);
+                            submitLayout.setVisibility(View.VISIBLE);
+                            addNext.setVisibility(View.GONE);
+                            stepView.go(stepView.getCurrentStep()+1, true);
+                            stepView.done(true);
+                        }
+                        break;
+                }
+            });
             Dexter.withContext(getApplicationContext())
                     .withPermission(Manifest.permission.ACCESS_FINE_LOCATION)
                     .withListener(new PermissionListener() {
@@ -232,10 +313,6 @@ public class AddService extends AppCompatActivity {
         save.setOnClickListener(v -> {
             save.setText("Saving...");
             save.setActivated(false);
-            dataBio = biography.getText().toString();
-            if(isValid())
-            {
-
                 String hash = GeoFireUtils.getGeoHashForLocation(new GeoLocation(dataLat, dataLong));
                 Map<String, Object> docData = new HashMap<>();
                 Map<String, Object> docUpdate = new HashMap<>();
@@ -262,9 +339,8 @@ public class AddService extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Void unused) {
                                         editor.putString("service", serviceLink);
-
                                         editor.commit();
-
+                                        save.setText("Save");
                                         Toast.makeText(getApplicationContext(),"Service Added Successfully", Toast.LENGTH_SHORT).show();
                                         Intent i = new Intent(AddService.this, BottomActivity.class);
                                         startActivity(i);
@@ -279,10 +355,7 @@ public class AddService extends AppCompatActivity {
                                 // Log.w(TAG, "Error adding document", e);
                             }
                         });
-            }
-            else{
-                save.setText("Save");
-            }
+
         });
         upload.setOnClickListener(v -> Dexter.withContext(getApplicationContext())
                 .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -309,9 +382,9 @@ public class AddService extends AppCompatActivity {
 
     }
 
-    private boolean isValid() {
-        dataServiceMenu = new ArrayList<>();
-
+    private boolean isValidBasic()
+    {
+        dataBio = biography.getText().toString();
         if(dataAddress.trim().length()==0 || dataLong==0 ||dataLat==0)
         {
             Snackbar snackbar = Snackbar
@@ -333,13 +406,11 @@ public class AddService extends AppCompatActivity {
             snackbar.show();
             return false;
         }
-        else if(dataImages.size() ==0)
-        {
-            Snackbar snackbar = Snackbar
-                    .make(parent, "Please select your professional images", Snackbar.LENGTH_LONG);
-            snackbar.show();
-            return false;
-        }
+        return true;
+    }
+    private  boolean isValidService()
+    {
+        dataServiceMenu = new ArrayList<>();
         for(int i=0;i<layoutList.getChildCount();i++)
         {
             View  item = layoutList.getChildAt(i);
@@ -363,7 +434,18 @@ public class AddService extends AppCompatActivity {
                     servicePrice.getText().toString());
             dataServiceMenu.add(i,serviceItemModel);
         }
-        return  true;
+        return true;
+    }
+    private boolean isValidImages()
+    {
+        if(dataImages.size() ==0)
+    {
+        Snackbar snackbar = Snackbar
+                .make(parent, "Please select your professional images", Snackbar.LENGTH_LONG);
+        snackbar.show();
+        return false;
+    }
+        return true;
     }
 
     private void addView() {
@@ -397,6 +479,7 @@ public class AddService extends AppCompatActivity {
                     Uri fileuri = data.getClipData().getItemAt(i).getUri();
 
                     int index = files.size();
+                    imageUri.add(fileuri);
                     files.add(fileuri.getPath());
                     status.add("loading");
                     adapter.notifyDataSetChanged();
@@ -422,6 +505,7 @@ public class AddService extends AppCompatActivity {
             {
                 int index = files.size();
                 files.add(data.getData().getPath());
+                imageUri.add(data.getData());
                 status.add("loading");
                 adapter.notifyDataSetChanged();
 
