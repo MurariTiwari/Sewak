@@ -17,6 +17,7 @@ public class Modal {
     String user ;
     String allowPhone ;
     String serviceNumber;
+    String businessName;
 
 
 
@@ -31,7 +32,8 @@ public class Modal {
                  String images,
                  List<String> allImages,
                  ArrayList<Map<String, Object>> serviceMenu,
-                 String serviceNumber) {
+                 String serviceNumber,
+                 String businessName) {
         this.desc = desc;
         this.address = address;
         this.distance = distance;
@@ -43,6 +45,7 @@ public class Modal {
         this.user = user;
         this.allowPhone = allowPhone;
         this.serviceNumber = serviceNumber;
+        this.businessName = businessName;
     }
 
     public void setDesc(String desc) {
@@ -127,6 +130,14 @@ public class Modal {
 
     public String getUser() {
         return user;
+    }
+
+    public String getBusinessName() {
+        return businessName;
+    }
+
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
     public String getAllowPhone() {

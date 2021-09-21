@@ -65,6 +65,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 i.putExtra("from",data.get(position).getFrom());
                 i.putExtra("user",data.get(position).getUser());
                 i.putExtra("service",data.get(position).getService());
+                i.putExtra("businessName",data.get(position).getBusinessName());
                 i.putExtra("allow",data.get(position).getAllowPhone());
                 i.putExtra("servicePhoneNumber",data.get(position).getServiceNumber());
                 i.putStringArrayListExtra("images", (ArrayList<String>) data.get(position).getAllImages());

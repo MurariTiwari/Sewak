@@ -129,7 +129,8 @@ public class Results extends AppCompatActivity implements BottomSheetFilter.OnDi
                                             (distanceInM/1000),
                                             temp.get(0),
                                             temp,serviceItemModel,
-                                            doc.getString("phoneNumber")));
+                                            doc.getString("phoneNumber"),
+                                            doc.getString("businessName")));
 
                                 }
                             }

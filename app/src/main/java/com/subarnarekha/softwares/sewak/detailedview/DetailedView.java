@@ -41,7 +41,7 @@ public class DetailedView extends AppCompatActivity {
     FirebaseUser loggedinUser;
     ViewServiceAdapter adapter;
     private ProgressBar progressBar;
-    String desc,address,from,service,user,allowPhone,servicePhoneNumber;
+    String desc,address,from,service,user,allowPhone,servicePhoneNumber,businessName;
     List<String> images,serviceMenu,priceMenu;
     String phoneNumber,profileImg,name;
     TextView descText,addressText,fromText,serviceText,profileName;
@@ -66,6 +66,7 @@ public class DetailedView extends AppCompatActivity {
         serviceMenu = getIntent().getStringArrayListExtra("serviceMenu");
         priceMenu = getIntent().getStringArrayListExtra("priceMenu");
         service = getIntent().getStringExtra("service");
+        businessName = getIntent().getStringExtra("businessName");
         serviceText = findViewById(R.id.serviceName);
         descText = findViewById(R.id.serviceDescription);
         addressText = findViewById(R.id.serviceLocation);
@@ -80,7 +81,7 @@ public class DetailedView extends AppCompatActivity {
         descText.setText(desc);
         addressText.setText(address);
         fromText.setText("SINCE: "+from);
-        serviceText.setText(service);
+        serviceText.setText(businessName);
 
         db = FirebaseFirestore.getInstance();
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
