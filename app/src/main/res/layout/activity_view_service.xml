@@ -130,7 +130,7 @@
                         </ImageView>
                     </LinearLayout>
 
-                    <TextView
+                    <com.codesgood.views.JustifiedTextView
                         android:id="@+id/serviceDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

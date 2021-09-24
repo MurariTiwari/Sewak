@@ -77,7 +77,7 @@ import java.util.Map;
 public class AddService extends AppCompatActivity {
 
     TextView startDate,header;
-    EditText workLocation,biography;
+    EditText workLocation,biography,businessName;
     StepView stepView;
     Switch allowPhone;
     DatePickerDialog.OnDateSetListener dateChangedListener;
@@ -100,7 +100,7 @@ public class AddService extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
 
-    String dataAddress="",dataBio="",dataStartDate="",dataPhoneCall="yes";
+    String dataAddress="",dataBio="",dataStartDate="",dataPhoneCall="yes",dataBusinessName;
     double dataLat = 0,dataLong = 0;
     List<ServiceItemModel> dataServiceMenu;
     List<String> dataImages;
@@ -115,6 +115,7 @@ public class AddService extends AppCompatActivity {
 
         startDate = findViewById(R.id.selectdate);
         biography = findViewById(R.id.bio);
+        businessName = findViewById(R.id.businessName);
         workLocation = findViewById(R.id.work_location);
         layoutList = findViewById(R.id.layoutList);
         add = findViewById(R.id.floatingActionButton);
@@ -326,6 +327,7 @@ public class AddService extends AppCompatActivity {
                 docData.put("images", dataImages);
                 docData.put("allowPhone", dataPhoneCall);
                 docData.put("service",professionName);
+                docData.put("businessName",dataBusinessName);
                 docData.put("geohash",hash);
                 db.collection(profession.replaceAll("\\s", ""))
                         .add(docData)
@@ -383,9 +385,16 @@ public class AddService extends AppCompatActivity {
     }
 
     private boolean isValidBasic()
-    {
+    {   dataBusinessName = businessName.getText().toString();
         dataBio = biography.getText().toString();
-        if(dataAddress.trim().length()==0 || dataLong==0 ||dataLat==0)
+        if(dataBusinessName.trim().isEmpty())
+        {
+            Snackbar snackbar = Snackbar
+                    .make(parent, "Please enter your Shop Name", Snackbar.LENGTH_LONG);
+            snackbar.show();
+            return false;
+        }
+        else if(dataAddress.trim().length()==0 || dataLong==0 ||dataLat==0)
         {
             Snackbar snackbar = Snackbar
                     .make(parent, "Please select your work location", Snackbar.LENGTH_LONG);
@@ -441,7 +450,7 @@ public class AddService extends AppCompatActivity {
         if(dataImages.size() ==0)
     {
         Snackbar snackbar = Snackbar
-                .make(parent, "Please select your professional images", Snackbar.LENGTH_LONG);
+                .make(parent, "Please upload your professional images", Snackbar.LENGTH_LONG);
         snackbar.show();
         return false;
     }

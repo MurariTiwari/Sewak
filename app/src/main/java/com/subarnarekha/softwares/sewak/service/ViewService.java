@@ -148,7 +148,7 @@ public class ViewService extends Fragment implements DeleteConfirmation.DeleteCo
                                 progressBar.setProgress(100/images.size());
                                 adapter = new ViewServiceAdapter(getContext(),images);
                                 viewPager.setAdapter(adapter);
-                                serviceNameText.setText(documentSnapshot.getString("service"));
+                                serviceNameText.setText(documentSnapshot.getString("businessName"));
                                 serviceDescription.setText(documentSnapshot.getString("biography"));
                                 serviceLocation.setText(documentSnapshot.getString("address"));
                                 serviceTime.setText("SINCE :  "+documentSnapshot.getString("workStart"));

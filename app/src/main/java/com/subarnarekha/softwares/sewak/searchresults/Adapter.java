@@ -45,6 +45,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
         holder.desc.setText(data.get(position).getDesc());
         holder.address.setText(data.get(position).getAddress());
+        holder.businessName.setText(data.get(position).getBusinessName());
         holder.distance.setText(String.format("%.1f",data.get(position).getDistance())+"Km");
         Glide.with(ctx).load(data.get(position).getImages()).into(holder.img);
         holder.card.setOnClickListener(new View.OnClickListener() {
@@ -81,7 +82,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         return data.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
-        TextView desc,address,distance;
+        TextView desc,address,distance,businessName;
         ImageView img;
         CardView card;
         public ViewHolder(@NonNull @NotNull View itemView) {
@@ -91,6 +92,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
             img = itemView.findViewById(R.id.display_image);
             distance = itemView.findViewById(R.id.service_distance);
             card = itemView.findViewById(R.id.result_card);
+            businessName =itemView.findViewById(R.id.businessName);
         }
     }
 }

@@ -42,14 +42,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="2dp"
                 android:ellipsize="end"
-                android:maxLines="3"
+                android:maxLines="2"
                 android:text="we provide cook and catering services for events please contact us for more details"
                 android:textColor="@color/primary_light"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/display_image"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -65,10 +66,9 @@
                 app:layout_constraintStart_toEndOf="@+id/display_image">
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="10dp"
                     android:layout_weight="1"
                     android:src="@drawable/ic_baseline_location_on_24">
 
@@ -79,7 +79,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="1dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginRight="2dp"
                     android:layout_marginBottom="1dp"
                     android:layout_weight="7"
@@ -94,7 +93,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="2dp"
-                    android:layout_marginTop="15dp"
                     android:layout_marginRight="1dp"
                     android:layout_marginBottom="1dp"
                     android:layout_weight="4"
@@ -104,6 +102,20 @@
                     android:textColor="@color/primary_light"
                     android:textSize="16sp" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/businessName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="TextView"
+                android:textColor="@color/primary"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/contact_service"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/display_image"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

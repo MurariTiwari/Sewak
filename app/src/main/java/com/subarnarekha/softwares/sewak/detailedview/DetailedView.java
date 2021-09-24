@@ -122,8 +122,7 @@ public class DetailedView extends AppCompatActivity {
         loggedinUser = FirebaseAuth.getInstance().getCurrentUser();
         if(user.equals(""))
         {
-            profileName.setText("Unknown");
-            saveBtn.setVisibility(View.GONE);
+            profileName.setText(businessName);
         }else{
             documentReference = db.document("users/"+user);
             documentReference.get()
@@ -131,11 +130,7 @@ public class DetailedView extends AppCompatActivity {
                         name = (String) documentSnapshot.get("name");
                         profileImg = (String) documentSnapshot.get("profileimg");
                         phoneNumber = (String) documentSnapshot.get("phoneno");
-                        if (name.equals("")) {
-                            profileName.setText("Unknown");
-                        } else {
-                            profileName.setText(name);
-                        }
+                        profileName.setText(businessName);
                         if(!profileImg.equals("")){
                             Glide.with(this).load(profileImg).into(profilePic);
                         }
@@ -170,12 +165,42 @@ public class DetailedView extends AppCompatActivity {
             }
         });
         saveBtn.setOnClickListener(v -> {
-            if(user!=null) {
+            if(user.equals("")){
+                Map<String, Object> docUpdate = new HashMap<>();
+                Map<String, Object> contactData = new HashMap<>();
+                contactData.put("phoneno", servicePhoneNumber);
+                contactData.put("service", service);
+                contactData.put("name", businessName);
+                contactData.put("img", "");
+                documentReference = db.document("users/" + loggedinUser.getUid()+"/contact/"+servicePhoneNumber);
+                documentReference.set(contactData)
+                        .addOnSuccessListener(unused -> {
+                            if(preferences.contains("contact")) {
+                                if (preferences.getString("contact", "").equals("")) {
+                                    docUpdate.put("contact","yes");
+                                    db.document("users/" + loggedinUser.getUid()).update(docUpdate).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            editor.putString("contact", "yes");
+                                            editor.commit();
+                                            }
+                                    });
+                                }
+                            }
+                            Toast.makeText(getApplicationContext(), "Contact Saved Successfully", Toast.LENGTH_SHORT).show();
+                        });
+            }
+            else if(user!=null) {
                 Map<String, Object> docUpdate = new HashMap<>();
                 Map<String, Object> contactData = new HashMap<>();
                 contactData.put("phoneno", phoneNumber);
                 contactData.put("service", service);
-                contactData.put("name", name);
+                if(name.equals(""))
+                {
+                    contactData.put("name", businessName);
+                }else{
+                    contactData.put("name", name);
+                }
                 contactData.put("img", profileImg);
                 documentReference = db.document("users/" + loggedinUser.getUid()+"/contact/"+phoneNumber);
                 documentReference.set(contactData)
@@ -188,8 +213,7 @@ public class DetailedView extends AppCompatActivity {
                                         public void onSuccess(Void unused) {
                                             editor.putString("contact", "yes");
                                             editor.commit();
-                                            Toast.makeText(getApplicationContext(), "Contact Saved Successfully", Toast.LENGTH_SHORT).show();
-                                        }
+                                            }
                                     });
                                 }
                             }
